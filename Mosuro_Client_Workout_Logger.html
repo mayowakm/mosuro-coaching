@@ -258,7 +258,7 @@ function today(){return new Date().toISOString().slice(0,10);}
 function numOrNull(v){ return v==null||v===''? null : (typeof v==='number'? v : (isNaN(parseFloat(v))?null:parseFloat(v))); }
 
 /* ===== SUPABASE (cloud). Fill both in to go live; leave placeholders to run offline. ===== */
-const SUPABASE_URL = 'https://vmwvnbtdaulbbroculzu.supabase.co';
+const SUPABASE_URL = 'https://mmagrdnogqicaywkrhtw.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_qBipcgVdRFndEtE3SKtOCw_8DSer3xD';
 const CLOUD = !/PASTE_/.test(SUPABASE_URL) && !/PASTE_/.test(SUPABASE_KEY);
 let sb=null, USER=null;
