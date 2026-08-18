@@ -1078,7 +1078,7 @@ function numOrNull(v){ return v==null||v===''? null : (typeof v==='number'? v : 
    Leave the PASTE_ placeholders to keep running fully offline
    (localStorage) exactly as before.
    ============================================================ */
-const SUPABASE_URL = 'https://mmagrdnogqicaywkrhtw.supabase.co/rest/v1/';        // e.g. https://abcdefgh.supabase.co
+const SUPABASE_URL = 'https://mmagrdnogqicaywkrhtw.supabase.co';        // e.g. https://abcdefgh.supabase.co
 const SUPABASE_KEY = 'sb_publishable_qBipcgVdRFndEtE3SKtOCw_8DSer3xD';    // sb_publishable_...  (safe to expose)
 const CLOUD = !/PASTE_/.test(SUPABASE_URL) && !/PASTE_/.test(SUPABASE_KEY);
 let sb = null, COACH_ID = null, COACH_EMAIL = null;
