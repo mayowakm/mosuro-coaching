@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Log Your Workout</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root{
+    --ink:#12131a; --paper:#f5f0e8; --accent:#1f5fbf; --accent-soft:#e8f0fb; --accent-deep:#163f7d;
+    --good:#1f9e6b; --rule:#ded4c0; --muted:#746b5c; --white:#fffcf6; --card:#fff;
+    --shadow:0 1px 3px rgba(18,19,26,.06),0 6px 20px rgba(18,19,26,.05);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  html{-webkit-text-size-adjust:100%;}
+  body{background:var(--paper);color:var(--ink);font-family:'DM Sans',system-ui,sans-serif;font-size:15px;line-height:1.55;padding-bottom:96px;}
+  h1,h2,h3{font-family:'DM Serif Display',Georgia,serif;font-weight:400;}
+  .wrap{max-width:640px;margin:0 auto;padding:0 16px;}
+
+  .topbar{background:var(--ink);color:var(--white);padding:20px 0 18px;position:relative;}
+  .topbar::after{content:'';position:absolute;left:0;right:0;bottom:0;height:4px;background:var(--accent);}
+  .brand h1{font-size:25px;line-height:1.05;letter-spacing:-.3px;}
+  .brand h1 em{color:#7fb0f5;font-style:italic;}
+  .brand p{color:#b9b1a3;font-size:12.5px;margin-top:4px;}
+
+  main{padding-top:22px;}
+  .lead{font-size:14px;color:var(--muted);margin-bottom:18px;}
+  .lead b{color:var(--ink);}
+
+  .card{background:var(--card);border:1px solid var(--rule);border-radius:14px;box-shadow:var(--shadow);margin-bottom:16px;}
+  .card-pad{padding:18px;}
+  .eyebrow{font-size:10.5px;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;color:var(--accent);margin-bottom:8px;}
+
+  .chips{display:flex;gap:8px;flex-wrap:wrap;}
+  .chip{border:1.5px solid var(--rule);background:var(--white);border-radius:999px;padding:9px 16px;font-size:14px;font-weight:600;cursor:pointer;color:var(--muted);transition:.15s;}
+  .chip:hover{border-color:var(--accent);}
+  .chip.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+  .row .lbl{font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);min-width:44px;}
+
+  label.fl{font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px;}
+  input,textarea,select{font-family:'DM Sans',sans-serif;font-size:16px;color:var(--ink);border:1.5px solid var(--rule);border-radius:10px;background:var(--white);padding:11px 12px;width:100%;outline:none;transition:border-color .15s,box-shadow .15s;}
+  input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);}
+  textarea{resize:vertical;min-height:64px;line-height:1.5;}
+
+  /* optional weight */
+  .collapse-head{display:flex;justify-content:space-between;align-items:center;cursor:pointer;padding:14px 18px;}
+  .collapse-head h3{font-size:15px;}
+  .collapse-head .plus{color:var(--accent);font-weight:700;font-size:20px;line-height:1;}
+  .collapse-body{display:none;padding:0 18px 18px;}
+  .collapse.open .collapse-body{display:block;}
+  .collapse.open .plus{transform:rotate(45deg);}
+  .mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+  /* session cards */
+  .sess{margin-bottom:14px;overflow:hidden;}
+  .sess-head{display:flex;align-items:center;gap:12px;padding:16px 18px;cursor:pointer;}
+  .wtype{font-size:10px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;padding:5px 9px;border-radius:6px;color:#fff;white-space:nowrap;}
+  .wtype.hiit{background:#c0432a;} .wtype.strength{background:var(--accent);} .wtype.liss{background:#2f8a63;}
+  .sess-head .nm{font-family:'DM Serif Display',serif;font-size:18px;flex:1;line-height:1.15;}
+  .sess-head .sub{font-size:11.5px;color:var(--muted);font-weight:600;}
+  .badge{font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;}
+  .badge.done{background:#e4f5ec;color:var(--good);}
+  .badge.todo{background:#f0ebe0;color:var(--muted);}
+  .chev{color:var(--muted);font-size:14px;transition:transform .2s;}
+  .sess.open .chev{transform:rotate(90deg);}
+  .sess-body{display:none;padding:6px 18px 20px;border-top:1px solid var(--rule);}
+  .sess.open .sess-body{display:block;}
+  .sess-note{font-size:13px;color:var(--muted);margin:12px 0 16px;}
+
+  .ex{border:1px solid var(--rule);border-radius:12px;padding:12px 13px;margin-bottom:11px;background:#fffdf9;}
+  .ex .exname{font-weight:600;font-size:15px;margin-bottom:10px;}
+  .ex-inputs{display:grid;gap:9px;}
+  .ex-inputs.three{grid-template-columns:1fr 1fr 1fr;}
+  .ex-inputs.two{grid-template-columns:1fr 1fr;}
+  .ex-inputs .fl{margin-bottom:4px;}
+
+  .meta3{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0;}
+
+  .effort{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px;}
+  .eff{width:38px;height:40px;border:1.5px solid var(--rule);background:var(--white);border-radius:9px;font-weight:700;font-size:15px;color:var(--muted);cursor:pointer;}
+  .eff.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+
+  .btn{font-family:'DM Sans',sans-serif;font-weight:600;font-size:15px;cursor:pointer;border-radius:11px;padding:13px 20px;border:1.5px solid transparent;transition:.15s;width:100%;}
+  .btn-primary{background:var(--accent);color:#fff;} .btn-primary:hover{background:var(--accent-deep);}
+  .btn-ghost{background:transparent;color:var(--accent);border-color:var(--rule);} .btn-ghost:hover{border-color:var(--accent);background:var(--accent-soft);}
+  .btn-done{background:var(--good);color:#fff;border-color:var(--good);}
+
+  /* sticky share */
+  .sharebar{position:fixed;left:0;right:0;bottom:0;background:rgba(245,240,232,.94);backdrop-filter:blur(8px);border-top:1px solid var(--rule);padding:12px 16px;z-index:60;}
+  body.gated .topbar, body.gated main, body.gated .sharebar{ display:none !important; }
+  #authGate{ display:none; position:fixed; inset:0; z-index:3000; background:linear-gradient(160deg,#1f5fbf,#12376f); align-items:center; justify-content:center; padding:22px; }
+  #authGate.show{ display:flex; }
+  .auth-card{ background:var(--paper,#f5f0e8); border-radius:18px; padding:32px 26px; max-width:390px; width:100%; box-shadow:0 20px 60px rgba(0,0,0,.35); text-align:center; }
+  .auth-brand{ font-family:'DM Serif Display',serif; font-size:27px; color:#12131a; }
+  .auth-brand em{ color:#1f5fbf; font-style:italic; }
+  .auth-sub{ font-size:12px; letter-spacing:1px; text-transform:uppercase; color:#8a8172; font-weight:700; margin:4px 0 22px; }
+  .auth-lbl{ display:block; text-align:left; font-size:11px; letter-spacing:.5px; text-transform:uppercase; color:#8a8172; font-weight:700; margin-bottom:6px; }
+  #authGate input{ width:100%; padding:12px 14px; border:1.5px solid var(--rule,#ded4c0); border-radius:10px; font-family:inherit; font-size:15px; background:#fff; margin-bottom:14px; }
+  #authGate input:focus{ outline:none; border-color:#1f5fbf; }
+  .auth-btn{ width:100%; justify-content:center; }
+  .auth-msg{ font-size:13px; color:#12131a; margin-top:14px; min-height:18px; }
+  .auth-fine{ font-size:11.5px; color:#8a8172; margin-top:16px; line-height:1.5; }
+  .sharebar .wrap{padding:0 0;}
+  .sharebar .btn{max-width:640px;margin:0 auto;display:block;}
+  .sharebar .count{text-align:center;font-size:11.5px;color:var(--muted);margin-bottom:7px;font-weight:600;}
+
+  /* modal */
+  .overlay{position:fixed;inset:0;background:rgba(18,19,26,.5);display:none;align-items:flex-end;justify-content:center;z-index:100;}
+  .overlay.show{display:flex;}
+  .sheet{background:var(--paper);width:100%;max-width:640px;border-radius:18px 18px 0 0;max-height:90vh;overflow-y:auto;padding:22px 18px 30px;animation:up .25s ease;}
+  @keyframes up{from{transform:translateY(30px);opacity:.6;}to{transform:none;opacity:1;}}
+  .sheet h2{font-size:21px;margin-bottom:4px;}
+  .sheet .sub{color:var(--muted);font-size:13px;margin-bottom:16px;}
+  .share-text{width:100%;min-height:180px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;line-height:1.5;background:var(--white);border:1px solid var(--rule);border-radius:10px;padding:12px;color:var(--ink);}
+  .sheet .btn{margin-top:10px;}
+  .close-x{float:right;background:none;border:none;font-size:22px;color:var(--muted);cursor:pointer;line-height:1;}
+  .steps{background:var(--accent-soft);border:1px solid #cdddf5;border-radius:10px;padding:12px 14px;font-size:12.5px;color:var(--accent-deep);line-height:1.6;margin-bottom:14px;}
+
+  .footer{text-align:center;margin-top:30px;padding-top:22px;border-top:2px solid var(--ink);}
+  .footer .tag{font-family:'DM Serif Display',serif;font-style:italic;font-size:17px;color:var(--accent);}
+  .footer .hash{margin-top:8px;font-size:11.5px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
+  .footer .cred{margin-top:10px;font-size:11px;color:var(--muted);}
+
+  .toast{position:fixed;bottom:96px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:11px 20px;border-radius:10px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:.25s;z-index:200;box-shadow:0 8px 30px rgba(0,0,0,.25);}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  @media(max-width:420px){ .ex-inputs.three{grid-template-columns:1fr 1fr;} }
+</style>
+</head>
+<body>
+
+<div id="authGate">
+  <div class="auth-card">
+    <div class="auth-brand">Your <em>Workouts</em></div>
+    <div class="auth-sub">Sign in with your email</div>
+    <div id="authForm">
+      <label class="auth-lbl">Email your coach has on file</label>
+      <input id="authEmail" type="email" placeholder="you@email.com" autocomplete="email">
+      <button class="btn btn-primary auth-btn" onclick="sendMagic()">Email me a login link</button>
+    </div>
+    <p id="authMsg" class="auth-msg"></p>
+    <p class="auth-fine">One-tap sign-in — no password. Use the same email your coach set you up with.</p>
+  </div>
+</div>
+
+<div class="topbar">
+  <div class="wrap brand">
+    <h1>Hi <span id="helloName">there</span> <em>—</em> let’s log it</h1>
+    <p id="coachLine">Your sessions with Coach Mayowa · #stayactive</p>
+  </div>
+</div>
+
+<main class="wrap">
+  <p class="lead">Tap today’s session, fill in what you did as you go. <span id="cloudNote" style="display:none;">Everything saves to your coach automatically.</span><span id="offlineNote">When you’re done, hit <b>Share with coach</b>. Everything saves on your phone automatically.</span></p>
+
+  <!-- WHERE ARE YOU -->
+  <div class="card card-pad">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;">
+      <div class="eyebrow" style="margin-bottom:0;">Where you are</div>
+      <button id="loadFromCoachBtn" class="chip" style="padding:6px 12px;font-size:12px;" onclick="openSetup()">⚙ Load plan from coach</button>
+    </div>
+    <div class="row" style="margin-bottom:12px;">
+      <span class="lbl">Phase</span>
+      <select id="phaseSel" style="width:auto;min-width:120px;"></select>
+    </div>
+    <div class="row">
+      <span class="lbl">Week</span>
+      <div class="chips" id="weekChips"></div>
+    </div>
+    <div id="logoutRow" style="display:none;margin-top:14px;text-align:right;">
+      <button class="chip" style="padding:6px 12px;font-size:12px;" onclick="doLogout()">Sign out</button>
+    </div>
+  </div>
+
+  <!-- OPTIONAL WEIGHT -->
+  <div class="card collapse" id="weightCard">
+    <div class="collapse-head" onclick="document.getElementById('weightCard').classList.toggle('open')">
+      <h3>Log today’s weight <span style="font-family:'DM Sans';font-size:12px;color:var(--muted);font-weight:600;">· optional</span></h3>
+      <span class="plus">+</span>
+    </div>
+    <div class="collapse-body">
+      <div class="mini-grid">
+        <div><label class="fl">Weight (lbs)</label><input type="number" step="0.1" id="q_weight" inputmode="decimal" placeholder="e.g. 240"></div>
+        <div><label class="fl">Date</label><input type="date" id="q_date"></div>
+      </div>
+      <div style="margin-top:12px;"><label class="fl">Note (optional)</label><input type="text" id="q_note" placeholder="How you’re feeling…"></div>
+      <button class="btn btn-ghost" style="margin-top:14px;" onclick="saveWeight()">Save weight</button>
+      <div id="weightList" style="margin-top:12px;font-size:12.5px;color:var(--muted);"></div>
+    </div>
+  </div>
+
+  <div class="eyebrow" style="margin:22px 0 10px;">Today’s session</div>
+  <div id="sessions"></div>
+
+  <div class="footer">
+    <div class="tag">“Go far… Go fast… Go easy… Just go!”</div>
+    <div class="hash">#activedad · #stayactive</div>
+    <div class="cred" id="cred">Coaching by Mayowa Mosuro · Certified Personal Trainer</div>
+  </div>
+</main>
+
+<div class="sharebar" id="shareBar">
+  <div class="wrap">
+    <div class="count" id="shareCount"></div>
+    <button class="btn btn-primary" onclick="openShare()">📤 Share with coach</button>
+  </div>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="sheet">
+    <button class="close-x" onclick="closeShare()">×</button>
+    <h2>Send to Coach Mayowa</h2>
+    <p class="sub">Copy this and send it in your usual chat (WhatsApp, text, or email). It includes a code your coach loads into their tracker.</p>
+    <div class="steps"><b>Two taps:</b> 1) Copy the summary &nbsp; 2) Paste it into your message to Coach. That’s it.</div>
+    <textarea class="share-text" id="shareText" readonly></textarea>
+    <button class="btn btn-primary" onclick="copyShare()">Copy summary</button>
+    <button class="btn btn-ghost" onclick="downloadShare()">Download as file instead</button>
+  </div>
+</div>
+
+<div class="overlay" id="setupOverlay">
+  <div class="sheet">
+    <button class="close-x" onclick="closeSetup()">×</button>
+    <h2>Load your plan</h2>
+    <p class="sub">Your coach sends you a setup code once. Paste it here to load your name and this phase’s workouts. You only do this again if your coach updates your plan.</p>
+    <label class="fl">Your name</label>
+    <input id="su_name" type="text" placeholder="Your name" style="margin-bottom:12px;">
+    <label class="fl">Your email</label>
+    <input id="su_email" type="email" placeholder="you@email.com" style="margin-bottom:12px;">
+    <label class="fl">Setup code from coach</label>
+    <textarea id="su_code" class="share-text" style="min-height:120px;" placeholder="Paste the setup code here…"></textarea>
+    <button class="btn btn-primary" onclick="applySetup()">Load my plan</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------- default plan (used until the coach's setup code is loaded) ---------- */
+function nx(name,sets,reps){ return {name, sets:sets||'', reps:reps||''}; }
+const DEFAULT_PLAN=[
+  {id:'w1',type:'hiit',name:'Metabolic HIIT',sched:'Session 1',tracksWeight:true,note:'Full-body circuit. Push through each interval, recover, repeat.',
+   exercises:[nx('Dynamic warm-up (5 min)','','5 min'),nx('Kettlebell swings','3','15'),nx('Squat to press','3','12'),nx('Mountain climbers','3','30s'),nx('Battle ropes / alt. punches','3','30s'),nx('Step-ups','3','12'),nx('Cool-down (5 min)','','5 min')]},
+  {id:'w2',type:'strength',name:'Full-Body Strength + Cardio',sched:'Session 2',tracksWeight:true,note:'Lift first, then the cardio finisher. Write down the weights you use.',
+   exercises:[nx('Goblet squat','3','10'),nx('Dumbbell chest press','3','10'),nx('One-arm dumbbell row','3','10'),nx('Romanian deadlift','3','10'),nx('Reverse lunges','3','12'),nx('Plank (hold)','3','40s'),nx('Cardio finisher: 15–20 min incline / row','','15–20 min')]},
+  {id:'w3',type:'hiit',name:'Cardio Interval HIIT',sched:'Session 3',tracksWeight:false,note:'Machine intervals — bike, rower, or treadmill. Hard, then easy.',
+   exercises:[nx('Warm-up (5 min easy)','','5 min'),nx('Interval: 30s hard / 60s easy','1','round'),nx('Interval round 2','1','round'),nx('Interval round 3','1','round'),nx('Interval round 4','1','round'),nx('Bodyweight burnout (optional)','1','60s'),nx('Cool-down (5 min)','','5 min')]},
+  {id:'w4',type:'liss',name:'Low-Intensity Steady State',sched:'Session 4',tracksWeight:false,note:'60–75 min brisk incline walk or Stairmaster. Easy, steady pace.',
+   exercises:[nx('Brisk walk (incline) or Stairmaster — 60–75 min','','60–75 min')]}
+];
+const STORE='isioma_client_v1';
+
+function uid(){ return (window.crypto&&crypto.randomUUID)? crypto.randomUUID() : 'id-'+Math.random().toString(36).slice(2,10); }
+function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function today(){return new Date().toISOString().slice(0,10);}
+function numOrNull(v){ return v==null||v===''? null : (typeof v==='number'? v : (isNaN(parseFloat(v))?null:parseFloat(v))); }
+
+/* ===== SUPABASE (cloud). Fill both in to go live; leave placeholders to run offline. ===== */
+const SUPABASE_URL = 'https://vmwvnbtdaulbbroculzu.supabase.co/rest/v1/';
+const SUPABASE_KEY = 'sb_publishable_kstfEpDja4gnwSE8_QRU0Q__O79P5zD';
+const CLOUD = !/PASTE_/.test(SUPABASE_URL) && !/PASTE_/.test(SUPABASE_KEY);
+let sb=null, USER=null;
+
+function fresh(){
+  return { client:'Isioma Coker', email:'', coach:'Mayowa Mosuro', phaseName:'Phase 1', week:1, totalWeeks:4,
+    plan: JSON.parse(JSON.stringify(DEFAULT_PLAN)), logs:{}, weights:[], _clientId:null, _phaseId:null };
+}
+let state=CLOUD?fresh():load();
+function load(){ try{const r=localStorage.getItem(STORE); if(r){const s=Object.assign(fresh(),JSON.parse(r)); if(!Array.isArray(s.plan)||!s.plan.length) s.plan=JSON.parse(JSON.stringify(DEFAULT_PLAN)); return s;}}catch(e){} return fresh(); }
+function save(){ if(CLOUD){ saveCloud(); return; } try{localStorage.setItem(STORE,JSON.stringify(state));}catch(e){} }
+
+/* ---------- cloud auth gate ---------- */
+function showLogin(msg){
+  document.body.classList.add('gated');
+  const g=document.getElementById('authGate'); if(g) g.classList.add('show');
+  const m=document.getElementById('authMsg'); if(m&&msg!=null) m.textContent=msg;
+  const fm=document.getElementById('authForm'); if(fm) fm.style.display='';
+}
+function showApp(){ document.body.classList.remove('gated'); const g=document.getElementById('authGate'); if(g) g.classList.remove('show'); }
+async function cloudBoot(){
+  document.body.classList.add('gated');
+  const g=document.getElementById('authGate'); if(g) g.classList.add('show');
+  try{
+    sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+    const { data:{ session } } = await sb.auth.getSession();
+    if(!session){ showLogin('Enter your email to get your one-tap login link.'); return; }
+    await afterLogin(session);
+  }catch(e){ showLogin('Could not reach the server. ('+(e.message||e)+')'); }
+}
+async function sendMagic(){
+  const email=(document.getElementById('authEmail').value||'').trim();
+  const m=document.getElementById('authMsg');
+  if(!email){ if(m) m.textContent='Please enter your email.'; return; }
+  try{ const { error } = await sb.auth.signInWithOtp({ email, options:{ emailRedirectTo: location.href.split('#')[0] } });
+    if(m) m.textContent = error ? error.message : 'Check your email — tap the link to sign in.'; }
+  catch(e){ if(m) m.textContent='Could not send link: '+(e.message||e); }
+}
+async function afterLogin(session){
+  USER=session.user;
+  const fm=document.getElementById('authForm'); if(fm) fm.style.display='none';
+  const m=document.getElementById('authMsg'); if(m) m.textContent='Loading your plan…';
+  try{
+    try{ await sb.rpc('claim_client'); }catch(e){ /* may already be claimed */ }
+    const ok=await loadCloud();
+    if(!ok){ showLogin('You’re signed in, but no program is assigned to '+(USER.email||'your account')+' yet. Your coach will set it up.'); return; }
+    showApp(); bootUI();
+    const lo=document.getElementById('logoutRow'); if(lo) lo.style.display='';
+  }catch(e){ showLogin('Signed in, but loading failed: '+(e.message||e)); }
+}
+async function doLogout(){ try{ if(sb) await sb.auth.signOut(); }catch(e){} location.reload(); }
+
+async function loadCloud(){
+  const cRes=await sb.from('clients').select('*').limit(1);
+  const c=(cRes.data||[])[0]; if(!c) return false;
+  const phases=((await sb.from('phases').select('*').eq('client_id',c.id)).data||[]).sort((a,b)=>(a.sort_order||0)-(b.sort_order||0));
+  if(!phases.length) return false;
+  const active=phases.find(p=>p.id===c.active_phase)||phases[0];
+  const workouts=((await sb.from('workouts').select('*').eq('phase_id',active.id)).data||[]).sort((a,b)=>(a.sort_order||0)-(b.sort_order||0));
+  const logs=(await sb.from('logs').select('*').eq('client_id',c.id).eq('phase_id',active.id)).data||[];
+  const meas=((await sb.from('measurements').select('*').eq('client_id',c.id)).data||[]);
+  state=fresh();
+  state.client=c.name; state.email=c.email||''; state._clientId=c.id; state._phaseId=active.id;
+  state.phaseName=active.name; state.totalWeeks=active.weeks||4; state.week=1;
+  state.plan=workouts.map(w=>({ id:w.wkey, type:w.type, name:w.name, sched:w.sched, tracksWeight:!!w.tracks_weight, note:w.note||'',
+    exercises:(Array.isArray(w.exercises)?w.exercises:[]).map(e=>({name:e.name, sets:e.sets||'', reps:e.reps||''})) }));
+  if(!state.plan.length) state.plan=JSON.parse(JSON.stringify(DEFAULT_PLAN));
+  state.logs={};
+  logs.forEach(l=>{ state.logs[l.week+'|'+l.wkey]={ completed:!!l.completed, date:l.date||'', duration:l.duration||'', effort:l.effort||0,
+    observations:l.observations||'', exercises:Array.isArray(l.exercises)?l.exercises:[] }; });
+  state.weights=meas.filter(m=>m.weight!=null).map(m=>({ id:m.id, date:m.date, weight:numOrNull(m.weight), notes:(m.notes||'').replace(/ — logged by client$/,'') }))
+    .sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+  return true;
+}
+let _lt=null,_lb=false,_la=false;
+function saveCloud(){ clearTimeout(_lt); _lt=setTimeout(runSaveCloud,700); }
+async function runSaveCloud(){
+  if(_lb){ _la=true; return; }
+  _lb=true;
+  try{
+    if(state._clientId && state._phaseId){
+      const rows=Object.keys(state.logs).map(k=>{ const parts=k.split('|'); const l=state.logs[k];
+        return { client_id:state._clientId, phase_id:state._phaseId, week:+parts[0], wkey:parts.slice(1).join('|'),
+          completed:!!l.completed, date:l.date||null, duration:l.duration||null, effort:l.effort||null,
+          observations:l.observations||null, exercises:(l.exercises||[]).filter(e=>e.weight||e.sets||e.reps).map(e=>({name:e.name,weight:e.weight,sets:e.sets,reps:e.reps})),
+          client_logged:true, updated_at:new Date().toISOString() }; })
+        .filter(r=> r.completed||r.duration||r.effort||r.observations||r.exercises.length);
+      if(rows.length) await sb.from('logs').upsert(rows,{ onConflict:'client_id,phase_id,week,wkey' });
+      const mRows=state.weights.map(w=>({ id:w.id||undefined, client_id:state._clientId, date:w.date||today(), weight:w.weight, notes:((w.notes||'')+' — logged by client').trim() }));
+      if(mRows.length) await sb.from('measurements').upsert(mRows);
+    }
+  }catch(e){ console.error('client save',e); toast('Sync issue — will retry'); }
+  _lb=false; if(_la){ _la=false; runSaveCloud(); }
+}
+
+function key(w,wid){return w+'|'+wid;}
+function getLog(w,wid){
+  const k=key(w,wid);
+  if(!state.logs[k]){ const t=state.plan.find(x=>x.id===wid);
+    state.logs[k]={completed:false,date:'',duration:'',effort:0,observations:'',exercises:(t?t.exercises:[]).map(e=>({name:e.name,weight:'',sets:'',reps:''}))}; }
+  return state.logs[k];
+}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2000);}
+let _s=null; function softSave(){clearTimeout(_s);_s=setTimeout(save,250);}
+
+/* ---------- setup code from coach ---------- */
+function openSetup(){
+  document.getElementById('su_name').value=state.client||'';
+  document.getElementById('su_email').value=state.email||'';
+  document.getElementById('su_code').value='';
+  document.getElementById('setupOverlay').classList.add('show');
+}
+function closeSetup(){ document.getElementById('setupOverlay').classList.remove('show'); }
+function applySetup(){
+  const name=document.getElementById('su_name').value.trim();
+  const email=document.getElementById('su_email').value.trim();
+  const raw=document.getElementById('su_code').value.trim();
+  if(name) state.client=name;
+  if(email) state.email=email;
+  if(raw){
+    let code=raw; const m=raw.match(/([A-Za-z0-9+/=]{40,})\s*$/); if(m) code=m[1];
+    let payload;
+    try{ payload=JSON.parse(decodeURIComponent(escape(atob(code)))); }
+    catch(e){ toast('That setup code didn’t read — check you copied it all'); return; }
+    if(!payload || payload.kind!=='client-setup'){ toast('That’s not a setup code'); return; }
+    state.client=payload.client||state.client;
+    state.email=payload.email||state.email;
+    state.coach=payload.coach||state.coach;
+    state.phaseName=payload.phaseName||state.phaseName;
+    state.totalWeeks=payload.totalWeeks||state.totalWeeks;
+    state.plan=(payload.workouts||[]).map(w=>({ id:w.id, type:w.type||'strength', name:w.name||'Session', sched:w.sched||'', tracksWeight:!!w.tracksWeight, note:w.note||'',
+      exercises:(w.exercises||[]).map(e=>({name:e.name, sets:e.sets||'', reps:e.reps||''})) }));
+    if(!state.plan.length) state.plan=JSON.parse(JSON.stringify(DEFAULT_PLAN));
+    // drop auto-created but untouched logs so their exercise rows reseed from the new plan
+    Object.keys(state.logs).forEach(k=>{
+      const l=state.logs[k];
+      const touched=l.completed||l.duration||l.effort||l.observations||(l.exercises||[]).some(e=>e.weight||e.sets||e.reps);
+      if(!touched) delete state.logs[k];
+    });
+    toast('Plan loaded for '+state.client+' ✓');
+  } else {
+    toast('Saved');
+  }
+  save(); closeSetup(); renderIdentity(); renderTop(); renderSessions();
+}
+function renderIdentity(){
+  const nm=(state.client||'there').trim().split(/\s+/)[0];
+  document.getElementById('helloName').textContent=nm;
+  document.getElementById('coachLine').textContent='Your sessions with Coach '+(state.coach||'Mayowa').split(' ')[0]+' · #stayactive';
+  document.getElementById('cred').textContent='Coaching by '+(state.coach||'Mayowa Mosuro')+' · Certified Personal Trainer';
+  document.title=(state.client||'Client')+' — Log Your Workout';
+}
+
+/* ---------- render ---------- */
+function renderTop(){
+  const sel=document.getElementById('phaseSel');
+  sel.innerHTML=`<option>${esc(state.phaseName)}</option>`; sel.disabled=true;
+  const chips=document.getElementById('weekChips');
+  let h='';
+  for(let w=1;w<=state.totalWeeks;w++){
+    let done=0; state.plan.forEach(t=>{if(state.logs[key(w,t.id)]?.completed)done++;});
+    h+=`<button class="chip ${w===state.week?'active':''}" onclick="setWeek(${w})">Week ${w}${done?` · ${done}/${state.plan.length}`:''}</button>`;
+  }
+  chips.innerHTML=h;
+}
+function setWeek(w){state.week=w;save();renderTop();renderSessions();}
+
+function renderSessions(){
+  const host=document.getElementById('sessions'); host.innerHTML='';
+  if(!state.plan.length){ host.innerHTML='<p style="color:var(--muted);font-size:13px;">No sessions loaded yet. Tap “Load plan from coach” above.</p>'; updateShareCount(); return; }
+  state.plan.forEach(t=>{
+    const log=getLog(state.week,t.id);
+    const card=document.createElement('div'); card.className='card sess'+(log._open?' open':'');
+    const head=document.createElement('div'); head.className='sess-head';
+    head.innerHTML=`<span class="wtype ${t.type}">${t.type.toUpperCase()}</span>
+      <div style="flex:1;min-width:0;"><div class="nm">${esc(t.name)}</div><div class="sub">${esc(t.sched)} · Week ${state.week}</div></div>
+      <span class="badge ${log.completed?'done':'todo'}">${log.completed?'✓ Done':'To do'}</span><span class="chev">▶</span>`;
+    head.onclick=()=>{log._open=!log._open;card.classList.toggle('open');};
+    card.appendChild(head);
+    const body=document.createElement('div'); body.className='sess-body';
+    body.appendChild(buildBody(t,log));
+    card.appendChild(body);
+    host.appendChild(card);
+  });
+  updateShareCount();
+}
+
+function buildBody(t,log){
+  const f=document.createDocumentFragment();
+  const note=document.createElement('p'); note.className='sess-note'; note.textContent=t.note; f.appendChild(note);
+
+  const showW=t.tracksWeight;
+  const targets={}; (t.exercises||[]).forEach(e=>{ targets[e.name]={sets:e.sets,reps:e.reps}; });
+  log.exercises.forEach(ex=>{
+    const tg=targets[ex.name]||{};
+    const box=document.createElement('div'); box.className='ex';
+    const nm=document.createElement('div'); nm.className='exname'; nm.textContent=ex.name;
+    if(tg.sets||tg.reps){ const t2=document.createElement('span'); t2.style.cssText='font-family:DM Sans;font-size:11.5px;color:var(--muted);font-weight:600;margin-left:6px;'; t2.textContent='· target '+[tg.sets,tg.reps].filter(Boolean).join(' × '); nm.appendChild(t2); }
+    box.appendChild(nm);
+    const grid=document.createElement('div'); grid.className='ex-inputs '+(showW?'three':'two');
+    if(showW){
+      grid.appendChild(inp('Weight (lbs)',ex.weight,v=>{ex.weight=v;softSave();},'lbs'));
+      grid.appendChild(inp('Sets',ex.sets,v=>{ex.sets=v;softSave();},tg.sets||'—'));
+      grid.appendChild(inp('Reps',ex.reps,v=>{ex.reps=v;softSave();},tg.reps||'—'));
+    } else {
+      grid.appendChild(inp('Rounds / sets',ex.sets,v=>{ex.sets=v;softSave();},tg.sets||'—'));
+      grid.appendChild(inp('Time / reps',ex.reps,v=>{ex.reps=v;softSave();},tg.reps||'min'));
+    }
+    box.appendChild(grid); f.appendChild(box);
+  });
+
+  const meta=document.createElement('div'); meta.className='meta3';
+  meta.appendChild(field('Date','date',log.date||today(),v=>{log.date=v;softSave();}));
+  meta.appendChild(field('Total time','text',log.duration,v=>{log.duration=v;softSave();},'e.g. 45 min'));
+  f.appendChild(meta);
+
+  const el=document.createElement('div');
+  el.innerHTML='<label class="fl" style="margin-bottom:8px;">How hard did it feel? (1 easy – 10 max)</label>';
+  const eff=document.createElement('div'); eff.className='effort';
+  for(let i=1;i<=10;i++){ const b=document.createElement('button'); b.className='eff'+(log.effort===i?' active':''); b.textContent=i;
+    b.onclick=()=>{log.effort=i;softSave();eff.querySelectorAll('.eff').forEach((x,idx)=>x.classList.toggle('active',idx+1===i));}; eff.appendChild(b); }
+  el.appendChild(eff); f.appendChild(el);
+
+  const ol=document.createElement('div'); ol.style.marginTop='16px';
+  ol.innerHTML='<label class="fl">Notes for coach</label>';
+  const ta=document.createElement('textarea'); ta.placeholder='How did it go? Anything that felt off, or a win to share…';
+  ta.value=log.observations||''; ta.addEventListener('input',()=>{log.observations=ta.value;softSave();}); ol.appendChild(ta); f.appendChild(ol);
+
+  const btn=document.createElement('button');
+  const paint=()=>{btn.className='btn '+(log.completed?'btn-ghost':'btn-done'); btn.textContent=log.completed?'✓ Marked done — tap to undo':'Mark this session done';};
+  paint(); btn.style.marginTop='16px';
+  btn.onclick=()=>{log.completed=!log.completed; if(log.completed&&!log.date)log.date=today(); save(); paint(); renderTop(); updateShareCount(); toast(log.completed?'Nice work! Logged ✓':'Marked not done');};
+  f.appendChild(btn);
+  return f;
+}
+function inp(label,val,onCh,ph){
+  const w=document.createElement('div');
+  w.innerHTML=`<label class="fl">${label}</label>`;
+  const i=document.createElement('input'); i.value=val||''; if(ph)i.placeholder=ph; i.inputMode='decimal';
+  i.addEventListener('input',()=>onCh(i.value)); w.appendChild(i); return w;
+}
+function field(label,type,val,onCh,ph){
+  const w=document.createElement('div');
+  w.innerHTML=`<label class="fl">${label}</label>`;
+  const i=document.createElement('input'); i.type=type; i.value=val||''; if(ph)i.placeholder=ph;
+  i.addEventListener('input',()=>onCh(i.value)); w.appendChild(i); return w;
+}
+
+/* ---------- weight ---------- */
+function saveWeight(){
+  const w=document.getElementById('q_weight').value, d=document.getElementById('q_date').value||today(), n=document.getElementById('q_note').value.trim();
+  if(w===''){toast('Enter a weight first');return;}
+  state.weights.push({id:uid(),date:d,weight:parseFloat(w),notes:n}); save();
+  document.getElementById('q_weight').value=''; document.getElementById('q_note').value='';
+  renderWeights(); updateShareCount(); toast('Weight saved ✓');
+}
+function renderWeights(){
+  const el=document.getElementById('weightList');
+  if(!state.weights.length){el.innerHTML='';return;}
+  el.innerHTML='Saved: '+state.weights.slice().reverse().map(w=>`${w.date} · ${w.weight} lbs`).join(' &nbsp;|&nbsp; ');
+}
+
+/* ---------- share ---------- */
+function loggedSessions(){
+  const out=[];
+  Object.keys(state.logs).forEach(k=>{
+    const l=state.logs[k]; const [w,wid]=k.split('|');
+    const hasData=l.completed||l.duration||l.effort||l.observations||l.exercises.some(e=>e.weight||e.sets||e.reps);
+    if(hasData){ const t=state.plan.find(x=>x.id===wid);
+      out.push({week:+w,workoutId:wid,workoutName:t?t.name:wid,type:t?t.type:'',completed:l.completed,date:l.date,duration:l.duration,effort:l.effort,observations:l.observations,
+        exercises:l.exercises.filter(e=>e.weight||e.sets||e.reps).map(e=>({name:e.name,weight:e.weight,sets:e.sets,reps:e.reps}))}); }
+  });
+  out.sort((a,b)=>a.week-b.week);
+  return out;
+}
+function updateShareCount(){
+  const n=loggedSessions().length, wn=state.weights.length;
+  const bits=[]; if(n)bits.push(n+' session'+(n>1?'s':'')); if(wn)bits.push(wn+' weigh-in'+(wn>1?'s':''));
+  document.getElementById('shareCount').textContent = bits.length? ('Ready to send: '+bits.join(' · ')) : 'Log a session, then send it to your coach';
+}
+function buildPayload(){
+  return { v:1, kind:'client-log', client:state.client, email:state.email||'', phaseName:state.phaseName, sessions:loggedSessions(), weights:state.weights };
+}
+function b64(str){ return btoa(unescape(encodeURIComponent(str))); }
+function buildMessage(){
+  const p=buildPayload();
+  let t=`${(state.client||'Client').toUpperCase()} — Workout Log\n${p.phaseName}\n`;
+  if(!p.sessions.length && !p.weights.length){ t+='\n(Nothing logged yet.)\n'; }
+  p.sessions.forEach(s=>{
+    t+=`\n▸ ${s.workoutName} (${(s.type||'').toUpperCase()}) — Week ${s.week}${s.completed?' ✓':''}\n`;
+    if(s.date||s.duration||s.effort) t+=`   ${[s.date,s.duration?('Time '+s.duration):'',s.effort?('Effort '+s.effort+'/10'):''].filter(Boolean).join(' · ')}\n`;
+    s.exercises.forEach(e=>{ const bits=[e.weight?e.weight+' lbs':'',(e.sets||e.reps)?[e.sets,e.reps].filter(Boolean).join(' × '):''].filter(Boolean).join(' · ');
+      t+=`   • ${e.name}${bits?': '+bits:''}\n`; });
+    if(s.observations) t+=`   Notes: ${s.observations}\n`;
+  });
+  if(p.weights.length){ t+=`\n▸ Weigh-ins\n`; p.weights.forEach(w=>{t+=`   • ${w.date}: ${w.weight} lbs${w.notes?' — '+w.notes:''}\n`;}); }
+  t+=`\n----- BEGIN COACH DATA (don’t edit) -----\n${b64(JSON.stringify(p))}\n----- END COACH DATA -----\n`;
+  return t;
+}
+function openShare(){
+  document.getElementById('shareText').value=buildMessage();
+  document.getElementById('overlay').classList.add('show');
+}
+function closeShare(){document.getElementById('overlay').classList.remove('show');}
+function copyShare(){
+  const ta=document.getElementById('shareText'); ta.select(); ta.setSelectionRange(0,99999);
+  const txt=ta.value;
+  if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(()=>toast('Copied! Now paste it to Coach'),()=>fallbackCopy()); }
+  else fallbackCopy();
+  function fallbackCopy(){ try{document.execCommand('copy');toast('Copied! Now paste it to Coach');}catch(e){toast('Select all and copy manually');} }
+}
+function downloadShare(){
+  const blob=new Blob([buildMessage()],{type:'text/plain'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download=(state.client||'Client').replace(/\s+/g,'_')+'_workout_'+today()+'.txt'; a.click(); URL.revokeObjectURL(a.href); toast('Downloaded — send the file to Coach');
+}
+document.getElementById('overlay').addEventListener('click',e=>{if(e.target.id==='overlay')closeShare();});
+
+/* ---------- init ---------- */
+function bootUI(){
+  document.getElementById('q_date').value=today();
+  renderIdentity(); renderTop(); renderSessions(); renderWeights(); updateShareCount();
+  if(CLOUD){
+    // cloud clients get their plan automatically + auto-sync — hide the manual handoff bits
+    const ls=document.getElementById('loadFromCoachBtn'); if(ls) ls.style.display='none';
+    const sb2=document.getElementById('shareBar'); if(sb2) sb2.style.display='none';
+    const cn=document.getElementById('cloudNote'); if(cn) cn.style.display='';
+    const on=document.getElementById('offlineNote'); if(on) on.style.display='none';
+  }
+  document.getElementById('setupOverlay').addEventListener('click',e=>{ if(e.target.id==='setupOverlay') closeSetup(); });
+}
+if(CLOUD){ cloudBoot(); } else { bootUI(); }
+</script>
+</body>
+</html>
