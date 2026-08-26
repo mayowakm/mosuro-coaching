@@ -70,7 +70,14 @@
   .sess-note{font-size:13px;color:var(--muted);margin:12px 0 16px;}
 
   .ex{border:1px solid var(--rule);border-radius:12px;padding:12px 13px;margin-bottom:11px;background:#fffdf9;}
-  .ex .exname{font-weight:600;font-size:15px;margin-bottom:10px;}
+  .ex.ex-done{background:#eef6ef;border-color:#bfe0c4;}
+  .ex-head{display:flex;align-items:flex-start;gap:11px;margin-bottom:10px;}
+  .ex .exname{font-weight:600;font-size:15px;flex:1;}
+  .ex-check{flex-shrink:0;width:27px;height:27px;border-radius:8px;border:2px solid var(--accent,#1f5fbf);background:#fff;color:#fff;font-size:15px;font-weight:800;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;transition:all .12s;}
+  .ex-check.on{background:var(--accent,#1f5fbf);}
+  .ex-check:active{transform:scale(.9);}
+  .ex-progress{font-size:12px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;color:var(--muted);margin:0 0 12px;}
+  .ex-progress.all{color:#2f8a63;}
   .ex-inputs{display:grid;gap:9px;}
   .ex-inputs.three{grid-template-columns:1fr 1fr 1fr;}
   .ex-inputs.two{grid-template-columns:1fr 1fr;}
@@ -325,7 +332,7 @@ async function loadCloud(){
   state.phaseName=active.name; state.totalWeeks=active.weeks||4; state.week=1;
   state.plan=workouts.map(w=>({ id:w.wkey, type:w.type, name:w.name, sched:w.sched, tracksWeight:!!w.tracks_weight, note:w.note||'',
     exercises:(Array.isArray(w.exercises)?w.exercises:[]).map(e=>({name:e.name, sets:e.sets||'', reps:e.reps||''})) }));
-  if(!state.plan.length) state.plan=JSON.parse(JSON.stringify(DEFAULT_PLAN));
+  state._emptyPlan = state.plan.length===0; // coach hasn't built this phase yet — don't show fake defaults
   state.logs={};
   logs.forEach(l=>{ state.logs[l.week+'|'+l.wkey]={ completed:!!l.completed, date:l.date||'', duration:l.duration||'', effort:l.effort||0,
     observations:l.observations||'', exercises:Array.isArray(l.exercises)?l.exercises:[] }; });
@@ -343,7 +350,7 @@ async function runSaveCloud(){
       const rows=Object.keys(state.logs).map(k=>{ const parts=k.split('|'); const l=state.logs[k];
         return { client_id:state._clientId, phase_id:state._phaseId, week:+parts[0], wkey:parts.slice(1).join('|'),
           completed:!!l.completed, date:l.date||null, duration:l.duration||null, effort:l.effort||null,
-          observations:l.observations||null, exercises:(l.exercises||[]).filter(e=>e.weight||e.sets||e.reps).map(e=>({name:e.name,weight:e.weight,sets:e.sets,reps:e.reps})),
+          observations:l.observations||null, exercises:(l.exercises||[]).filter(e=>e.weight||e.sets||e.reps||e.done).map(e=>({name:e.name,weight:e.weight,sets:e.sets,reps:e.reps,done:!!e.done})),
           client_logged:true, updated_at:new Date().toISOString() }; })
         .filter(r=> r.completed||r.duration||r.effort||r.observations||r.exercises.length);
       if(rows.length) await sb.from('logs').upsert(rows,{ onConflict:'client_id,phase_id,week,wkey' });
@@ -358,7 +365,7 @@ function key(w,wid){return w+'|'+wid;}
 function getLog(w,wid){
   const k=key(w,wid);
   if(!state.logs[k]){ const t=state.plan.find(x=>x.id===wid);
-    state.logs[k]={completed:false,date:'',duration:'',effort:0,observations:'',exercises:(t?t.exercises:[]).map(e=>({name:e.name,weight:'',sets:'',reps:''}))}; }
+    state.logs[k]={completed:false,date:'',duration:'',effort:0,observations:'',exercises:(t?t.exercises:[]).map(e=>({name:e.name,weight:'',sets:'',reps:'',done:false}))}; }
   return state.logs[k];
 }
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2000);}
@@ -428,7 +435,12 @@ function setWeek(w){state.week=w;save();renderTop();renderSessions();}
 
 function renderSessions(){
   const host=document.getElementById('sessions'); host.innerHTML='';
-  if(!state.plan.length){ host.innerHTML='<p style="color:var(--muted);font-size:13px;">No sessions loaded yet. Tap “Load plan from coach” above.</p>'; updateShareCount(); return; }
+  if(!state.plan.length){
+    const msg = (CLOUD || state._emptyPlan)
+      ? 'Your coach is still building your plan for this phase — check back soon. 💪'
+      : 'No sessions loaded yet. Tap “Load plan from coach” above.';
+    host.innerHTML='<p style="color:var(--muted);font-size:13px;">'+msg+'</p>'; updateShareCount(); return;
+  }
   state.plan.forEach(t=>{
     const log=getLog(state.week,t.id);
     const card=document.createElement('div'); card.className='card sess'+(log._open?' open':'');
@@ -446,18 +458,38 @@ function renderSessions(){
   updateShareCount();
 }
 
+function allChecked(log){ return log.exercises.length>0 && log.exercises.every(e=>e.done); }
+function syncSessionDone(t,log,paintBtn){
+  // auto-complete the session when every exercise is ticked
+  if(allChecked(log)){ if(!log.completed){ log.completed=true; if(!log.date)log.date=today(); } }
+  if(paintBtn) paintBtn();
+}
 function buildBody(t,log){
   const f=document.createDocumentFragment();
   const note=document.createElement('p'); note.className='sess-note'; note.textContent=t.note; f.appendChild(note);
 
+  const prog=document.createElement('div'); prog.className='ex-progress'; f.appendChild(prog);
+  const paintProg=()=>{ const done=log.exercises.filter(e=>e.done).length; prog.textContent=done+' of '+log.exercises.length+' exercises done'; prog.classList.toggle('all',done===log.exercises.length&&done>0); };
+
   const showW=t.tracksWeight;
   const targets={}; (t.exercises||[]).forEach(e=>{ targets[e.name]={sets:e.sets,reps:e.reps}; });
+  let btnPaint=null;
   log.exercises.forEach(ex=>{
     const tg=targets[ex.name]||{};
-    const box=document.createElement('div'); box.className='ex';
+    const box=document.createElement('div'); box.className='ex'+(ex.done?' ex-done':'');
+    const head=document.createElement('div'); head.className='ex-head';
+    const chk=document.createElement('button'); chk.className='ex-check'+(ex.done?' on':''); chk.type='button';
+    chk.innerHTML=ex.done?'✓':''; chk.setAttribute('aria-label','Mark exercise done');
     const nm=document.createElement('div'); nm.className='exname'; nm.textContent=ex.name;
     if(tg.sets||tg.reps){ const t2=document.createElement('span'); t2.style.cssText='font-family:DM Sans;font-size:11.5px;color:var(--muted);font-weight:600;margin-left:6px;'; t2.textContent='· target '+[tg.sets,tg.reps].filter(Boolean).join(' × '); nm.appendChild(t2); }
-    box.appendChild(nm);
+    chk.onclick=()=>{
+      ex.done=!ex.done; box.classList.toggle('ex-done',ex.done); chk.classList.toggle('on',ex.done); chk.innerHTML=ex.done?'✓':'';
+      paintProg();
+      const was=log.completed; syncSessionDone(t,log,btnPaint);
+      save();
+      if(log.completed!==was){ renderSessions(); renderTop(); updateShareCount(); if(log.completed) toast('All done — session complete ✓'); }
+    };
+    head.appendChild(chk); head.appendChild(nm); box.appendChild(head);
     const grid=document.createElement('div'); grid.className='ex-inputs '+(showW?'three':'two');
     if(showW){
       grid.appendChild(inp('Weight (lbs)',ex.weight,v=>{ex.weight=v;softSave();},'lbs'));
@@ -469,6 +501,7 @@ function buildBody(t,log){
     }
     box.appendChild(grid); f.appendChild(box);
   });
+  paintProg();
 
   const meta=document.createElement('div'); meta.className='meta3';
   meta.appendChild(field('Date','date',log.date||today(),v=>{log.date=v;softSave();}));
@@ -489,8 +522,13 @@ function buildBody(t,log){
 
   const btn=document.createElement('button');
   const paint=()=>{btn.className='btn '+(log.completed?'btn-ghost':'btn-done'); btn.textContent=log.completed?'✓ Marked done — tap to undo':'Mark this session done';};
-  paint(); btn.style.marginTop='16px';
-  btn.onclick=()=>{log.completed=!log.completed; if(log.completed&&!log.date)log.date=today(); save(); paint(); renderTop(); updateShareCount(); toast(log.completed?'Nice work! Logged ✓':'Marked not done');};
+  btnPaint=paint; paint(); btn.style.marginTop='16px';
+  btn.onclick=()=>{
+    log.completed=!log.completed;
+    if(log.completed){ if(!log.date)log.date=today(); log.exercises.forEach(e=>e.done=true); }
+    else { log.exercises.forEach(e=>e.done=false); }
+    save(); renderSessions(); renderTop(); updateShareCount(); toast(log.completed?'Nice work! Logged ✓':'Marked not done');
+  };
   f.appendChild(btn);
   return f;
 }
