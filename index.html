@@ -168,6 +168,8 @@
   .icon-btn { background:none; border:none; cursor:pointer; color:var(--muted); font-size:12.5px; font-weight:600; padding:3px 6px; border-radius:6px; }
   .icon-btn:hover { color:var(--accent); background:var(--accent-soft); }
   .icon-btn.del:hover { color:#b0341f; background:#fbecea; }
+  .icon-btn.send { color:#fff; background:var(--accent,#1f5fbf); white-space:nowrap; }
+  .icon-btn.send:hover { color:#fff; background:#194f9e; }
 
   /* WORKOUTS */
   .week-nav { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px; }
@@ -209,6 +211,7 @@
   .col-num { width:74px; }
   .col-num input { text-align:center; }
   .ex-del { background:none; border:none; color:#c9beac; cursor:pointer; font-size:15px; line-height:1; padding:4px; }
+  .ex-done-dot{ display:inline-flex; align-items:center; justify-content:center; width:17px; height:17px; border-radius:5px; background:#2f8a63; color:#fff; font-size:11px; font-weight:800; margin-right:7px; vertical-align:middle; }
   .ex-del:hover { color:#b0341f; }
 
   .sess-meta { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:16px; }
@@ -674,6 +677,23 @@
   </div>
 </div>
 
+<div class="overlay" id="copyModal">
+  <div class="sheet2 narrow">
+    <button class="close-x" onclick="closeCopy()">×</button>
+    <h2 id="copyTitle">Copy from another client</h2>
+    <p class="sub" id="copyIntro"></p>
+    <label class="fl">From client</label>
+    <select id="copyClient" onchange="renderCopyPhases()" style="width:100%;margin-bottom:12px;"></select>
+    <label class="fl">From phase</label>
+    <select id="copyPhase" onchange="renderCopySessions()" style="width:100%;margin-bottom:12px;"></select>
+    <div id="copySessionRow">
+      <label class="fl">Session to copy</label>
+      <select id="copySession" style="width:100%;margin-bottom:12px;"></select>
+    </div>
+    <button class="btn btn-primary" id="copyGo" style="width:100%;justify-content:center;" onclick="doCopy()">Copy</button>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -1081,6 +1101,13 @@ function numOrNull(v){ return v==null||v===''? null : (typeof v==='number'? v : 
 const SUPABASE_URL = 'https://mmagrdnogqicaywkrhtw.supabase.co';        // e.g. https://abcdefgh.supabase.co
 const SUPABASE_KEY = 'sb_publishable_qBipcgVdRFndEtE3SKtOCw_8DSer3xD';    // sb_publishable_...  (safe to expose)
 const CLOUD = !/PASTE_/.test(SUPABASE_URL) && !/PASTE_/.test(SUPABASE_KEY);
+/* Where clients log in. If you rename the logger file (e.g. 'log.html'), change this.
+   May be a bare filename (resolved next to this page) or a full https URL. */
+const LOGGER_PATH = 'log.html';
+function loggerURL(){
+  try{ return new URL(LOGGER_PATH, location.href).href.split('#')[0]; }
+  catch(e){ return location.origin + '/' + String(LOGGER_PATH).replace(/^\//,''); }
+}
 let sb = null, COACH_ID = null, COACH_EMAIL = null;
 
 function showLogin(msg){
@@ -1216,6 +1243,31 @@ async function syncLibraryCloud(){
   if(delL.length) await sb.from('library').delete().in('id',delL);
 }
 async function cloudDeleteClient(id){ if(CLOUD&&sb){ try{ await sb.from('clients').delete().eq('id',id); }catch(e){ console.error(e); } } }
+let _sendingLink = {};
+async function sendClientLink(id){
+  const c=state.clients.find(x=>x.id===id); if(!c) return;
+  if(!CLOUD||!sb){ toast('Add your Supabase keys to send login links'); return; }
+  const email=(c.email||'').trim().toLowerCase();
+  if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    toast('Add a valid email for '+c.name+' first (edit the client), then try again.'); switchTab('data'); return;
+  }
+  if(_sendingLink[id]){ return; } // ignore rapid double-clicks
+  // keep the stored email clean so the client's claim_client match always succeeds
+  if(c.email!==email){ c.email=email; saveState(); if(typeof renderClientSwitcher==='function') renderClientSwitcher(); }
+  _sendingLink[id]=true;
+  toast('Sending login link to '+email+'…');
+  try{
+    const { error } = await sb.auth.signInWithOtp({ email, options:{ emailRedirectTo: loggerURL(), shouldCreateUser:true } });
+    if(error){
+      const s=error.status||0;
+      if(s===429 || /rate/i.test(error.message||'')) toast('Too many emails just now — wait a minute, then try again.');
+      else toast('Could not send: '+(error.message||'unknown error'));
+    } else {
+      toast('✓ Link sent to '+email+' — tell them to check junk/spam too.');
+    }
+  }catch(e){ toast('Could not send: '+(e.message||e)); }
+  finally{ setTimeout(()=>{ delete _sendingLink[id]; }, 4000); }
+}
 async function cloudPushAll(){ // used by "import backup to cloud" / first-run seed
   if(!CLOUD||!sb) return;
   for(const c of state.clients){ const prev=state.activeClient; state.activeClient=c.id; await syncClientCloud(c); state.activeClient=prev; }
@@ -1675,6 +1727,7 @@ function exerciseRow(ex,idx,log,showW,target){
   target=target||{};
   const tr=document.createElement('tr');
   const nameTd=document.createElement('td');
+  if(ex.done){ const dot=document.createElement('span'); dot.className='ex-done-dot'; dot.textContent='✓'; dot.title='Client checked this off'; nameTd.appendChild(dot); }
   const nameIn=document.createElement('input'); nameIn.value=ex.name||''; nameIn.placeholder='Exercise';
   nameIn.addEventListener('input',()=>{ex.name=nameIn.value; softSave();}); nameTd.appendChild(nameIn); tr.appendChild(nameTd);
   const mk=(key,ph)=>{ const td=document.createElement('td'); td.className='col-num';
@@ -1798,8 +1851,22 @@ function renderBuilder(){
   });
   const tools=document.createElement('div'); tools.className='btn-row no-print'; tools.style.marginTop='4px';
   tools.innerHTML=`<button class="btn btn-primary" onclick="addWorkout('${p.id}')">+ Add session</button>
+    <button class="btn btn-ghost" onclick="duplicatePhaseHere('${p.id}')">⧉ Duplicate this phase</button>
+    <button class="btn btn-ghost" onclick="openCopy('session')">⧉ Copy a session from another client</button>
+    <button class="btn btn-ghost" onclick="openCopy('phase')">⧉ Copy a phase/program from another client</button>
     <button class="btn btn-ghost" onclick="resetPhaseWorkouts('${p.id}')">Reset phase to default template</button>`;
   host.appendChild(tools);
+}
+function duplicatePhaseHere(pid){
+  const src=phaseById(pid); if(!src) return;
+  const copy=JSON.parse(JSON.stringify(src));
+  copy.id='ph-'+uid(); copy.name=src.name+' (copy)';
+  const seen=new Set();
+  (copy.workouts||[]).forEach(w=>{ w.id='w-'+uid(); if(seen.has(w.id)) w.id='w-'+uid(); seen.add(w.id); });
+  const i=C().phases.findIndex(x=>x.id===pid);
+  C().phases.splice(i+1,0,copy);
+  state.activePhase=copy.id;
+  saveState(); renderPhaseSelect(); renderPlan(); toast('Phase duplicated within '+C().name);
 }
 function editWo(pid,wid,key,val){
   const w=workoutDef(pid,wid); if(!w) return;
@@ -1845,6 +1912,62 @@ function addWorkout(pid){
 function resetPhaseWorkouts(pid){
   if(!confirm('Reset this phase’s workouts back to the default template? This replaces the current sessions (logged results are kept).')) return;
   phaseById(pid).workouts=cloneWorkouts(); saveState(); renderBuilder(); renderWorkouts(); toast('Reset to default template');
+}
+
+/* ---------- copy a session / phase from another client ---------- */
+let copyMode='session';
+function openCopy(mode){
+  copyMode=mode;
+  const others=state.clients.slice(); // include current client too (copy across their own phases)
+  document.getElementById('copyTitle').textContent = mode==='session' ? 'Copy a session' : 'Copy a phase / program';
+  document.getElementById('copyIntro').textContent = mode==='session'
+    ? 'Pick any client (including this one), a phase, and the session to copy. It’s added to '+C().name+'’s current phase ('+currentPhase().name+').'
+    : 'Pick any client (including this one) and a phase to copy. It’s added to '+C().name+' as a brand-new phase (nothing existing is changed).';
+  document.getElementById('copySessionRow').style.display = mode==='session' ? '' : 'none';
+  if(!others.length){
+    document.getElementById('copyClient').innerHTML='<option>No other clients yet</option>';
+    document.getElementById('copyPhase').innerHTML=''; document.getElementById('copySession').innerHTML='';
+    document.getElementById('copyGo').disabled=true;
+  } else {
+    document.getElementById('copyGo').disabled=false;
+    document.getElementById('copyClient').innerHTML=others.map(c=>`<option value="${c.id}" ${c.id===state.activeClient?'selected':''}>${esc(c.name)}${c.id===state.activeClient?' (this client)':''}</option>`).join('');
+    renderCopyPhases();
+  }
+  document.getElementById('copyGo').textContent = mode==='session' ? 'Copy session here' : 'Copy as new phase';
+  document.getElementById('copyModal').classList.add('show');
+}
+function closeCopy(){ document.getElementById('copyModal').classList.remove('show'); }
+function copySourceClient(){ return state.clients.find(c=>c.id===document.getElementById('copyClient').value); }
+function renderCopyPhases(){
+  const c=copySourceClient(); if(!c) return;
+  document.getElementById('copyPhase').innerHTML=(c.phases||[]).map(p=>`<option value="${p.id}">${esc(p.name)} · ${(p.workouts||[]).length} session${(p.workouts||[]).length!==1?'s':''}</option>`).join('');
+  renderCopySessions();
+}
+function renderCopySessions(){
+  if(copyMode!=='session') return;
+  const c=copySourceClient(); if(!c) return;
+  const p=(c.phases||[]).find(x=>x.id===document.getElementById('copyPhase').value);
+  document.getElementById('copySession').innerHTML=((p&&p.workouts)||[]).map(w=>`<option value="${w.id}">${esc(w.name)}</option>`).join('');
+}
+function doCopy(){
+  const src=copySourceClient(); if(!src){ toast('Pick a client'); return; }
+  const srcPhase=(src.phases||[]).find(x=>x.id===document.getElementById('copyPhase').value); if(!srcPhase){ toast('Pick a phase'); return; }
+  if(copyMode==='session'){
+    const w=(srcPhase.workouts||[]).find(x=>x.id===document.getElementById('copySession').value); if(!w){ toast('Pick a session'); return; }
+    const copy=JSON.parse(JSON.stringify(w)); copy.id='w'+uid(); // unique within target phase
+    const target=currentPhase(); target.workouts.push(copy);
+    saveState(); renderBuilder(); renderWorkouts(); closeCopy(); toast('Session copied from '+src.name+' → '+target.name);
+  } else {
+    const newPhase=JSON.parse(JSON.stringify(srcPhase));
+    newPhase.id='ph-'+uid();
+    newPhase.name=srcPhase.name+' (from '+src.name+')';
+    // keep each session's wkey (unique within this new phase); ensure they are unique
+    const seen=new Set();
+    (newPhase.workouts||[]).forEach(w=>{ if(!w.id||seen.has(w.id)) w.id='w'+uid(); seen.add(w.id); });
+    C().phases.push(newPhase);
+    state.activePhase=newPhase.id;
+    saveState(); renderPhaseSelect(); renderPlan(); closeCopy(); toast('Phase copied from '+src.name+' as a new phase');
+  }
 }
 
 /* ---------- equipment picker for a single exercise ---------- */
@@ -2014,7 +2137,7 @@ function switchTab(name){
 function updateClient(){
   const c=state.client;
   c.name=document.getElementById('c_name').value||'Client';
-  if(document.getElementById('c_email')) c.email=document.getElementById('c_email').value.trim();
+  if(document.getElementById('c_email')) c.email=document.getElementById('c_email').value.trim().toLowerCase();
   c.trainer=document.getElementById('c_trainer').value||'Trainer';
   c.startWeight=parseFloat(document.getElementById('c_start').value)||c.startWeight;
   c.goalWeight=parseFloat(document.getElementById('c_goal').value)||c.goalWeight;
@@ -2033,6 +2156,7 @@ function renderClientSwitcher(){
           <div class="cr-sub">${esc(c.email||'no email set')} · ${c.startWeight}→${c.goalWeight} lbs · ${c.phases.length} phase${c.phases.length>1?'s':''}</div>
         </div>
         ${active?'':`<button class="icon-btn" onclick="setActiveClient('${c.id}')">Open</button>`}
+        ${CLOUD?`<button class="icon-btn send" onclick="sendClientLink('${c.id}')" title="Email this client a login link to the workout logger">✉ Send login link</button>`:''}
         <button class="icon-btn del" onclick="deleteClient('${c.id}')" ${state.clients.length<=1?'disabled style="opacity:.3;cursor:not-allowed"':''}>Delete</button>
       </div>`;
     }).join('');
@@ -2047,7 +2171,7 @@ function setActiveClient(id){
 function addClient(){
   const name=(document.getElementById('newClientName')?document.getElementById('newClientName').value:'').trim();
   if(!name){ toast('Enter the client’s name'); return; }
-  const email=(document.getElementById('newClientEmail')?document.getElementById('newClientEmail').value:'').trim();
+  const email=(document.getElementById('newClientEmail')?document.getElementById('newClientEmail').value:'').trim().toLowerCase();
   const start=parseFloat(document.getElementById('newClientStart')?document.getElementById('newClientStart').value:'')||200;
   const goal=parseFloat(document.getElementById('newClientGoal')?document.getElementById('newClientGoal').value:'')||Math.max(120,start-40);
   const c={ id:'c-'+uid(), name, email, trainer:C().trainer||'Mayowa Mosuro', startWeight:start, goalWeight:goal,
@@ -2130,9 +2254,9 @@ function importClientLog(){
     const effortTag = s.effort? ('Effort '+s.effort+'/10. ') : '';
     const merged = base.exercises.map(ex=>{
       const found=(s.exercises||[]).find(e=>e.name===ex.name);
-      return found? {name:ex.name, weight:found.weight||'', sets:found.sets||'', reps:found.reps||''} : {name:ex.name, weight:ex.weight||'', sets:ex.sets||'', reps:ex.reps||''};
+      return found? {name:ex.name, weight:found.weight||'', sets:found.sets||'', reps:found.reps||'', done:!!found.done} : {name:ex.name, weight:ex.weight||'', sets:ex.sets||'', reps:ex.reps||''};
     });
-    (s.exercises||[]).forEach(e=>{ if(!merged.find(x=>x.name===e.name)) merged.push({name:e.name,weight:e.weight||'',sets:e.sets||'',reps:e.reps||''}); });
+    (s.exercises||[]).forEach(e=>{ if(!merged.find(x=>x.name===e.name)) merged.push({name:e.name,weight:e.weight||'',sets:e.sets||'',reps:e.reps||'',done:!!e.done}); });
     state.logs[k]={ completed: s.completed!==false, date:s.date||'', duration:s.duration||'', avgHR:'',
       observations: effortTag + (s.observations||''), exercises: merged, _clientLogged:true };
     n++;
@@ -2298,6 +2422,7 @@ function init(){
   renderAll();
   document.getElementById('pickerModal').addEventListener('click',e=>{ if(e.target.id==='pickerModal') closePicker(); });
   document.getElementById('equipModal').addEventListener('click',e=>{ if(e.target.id==='equipModal') closeEquip(); });
+  document.getElementById('copyModal').addEventListener('click',e=>{ if(e.target.id==='copyModal') closeCopy(); });
 }
 function boot(){
   if(CLOUD){ cloudBoot(); }
