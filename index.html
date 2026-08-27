@@ -212,6 +212,9 @@
   .col-num input { text-align:center; }
   .ex-del { background:none; border:none; color:#c9beac; cursor:pointer; font-size:15px; line-height:1; padding:4px; }
   .ex-done-dot{ display:inline-flex; align-items:center; justify-content:center; width:17px; height:17px; border-radius:5px; background:#2f8a63; color:#fff; font-size:11px; font-weight:800; margin-right:7px; vertical-align:middle; }
+  .ex-target{ margin-top:3px; font-size:11px; line-height:1.4; }
+  .ex-target .ex-tgt{ color:var(--accent,#1f5fbf); font-weight:700; }
+  .ex-target .ex-cue{ color:var(--muted); font-style:italic; }
   .ex-del:hover { color:#b0341f; }
 
   .sess-meta { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:16px; }
@@ -1358,10 +1361,15 @@ function phaseById(id){ return state.phases.find(p=>p.id===id); }
 function workoutDef(phaseId,wid){ const p=phaseById(phaseId); return p ? (p.workouts||[]).find(w=>w.id===wid) : null; }
 function getLog(phaseId,week,wid){
   const k=logKey(phaseId,week,wid);
+  const w = workoutDef(phaseId,wid);
+  const planEx = (w? w.exercises:[])||[];
   if(!state.logs[k]){
-    const w = workoutDef(phaseId,wid);
     state.logs[k] = { completed:false, date:'', duration:'', avgHR:'', observations:'',
-      exercises: (w? w.exercises:[]).map(e=>({ name:e.name, weight:'', sets:'', reps:'' })) };
+      exercises: planEx.map(e=>({ name:e.name, weight:'', sets:'', reps:'' })) };
+  } else if(planEx.length){
+    const log=state.logs[k];
+    const have=new Set((log.exercises||[]).map(e=>e&&e.name));
+    planEx.forEach(pe=>{ if(!have.has(pe.name)) log.exercises.push({ name:pe.name, weight:'', sets:'', reps:'' }); });
   }
   return state.logs[k];
 }
@@ -1683,7 +1691,7 @@ function buildSessionBody(t,log,phaseId){
 
   // exercise table — plan targets shown as placeholders
   const showW=t.tracksWeight;
-  const targets={}; (t.exercises||[]).forEach(e=>{ targets[e.name]={sets:e.sets,reps:e.reps}; });
+  const targets={}; (t.exercises||[]).forEach(e=>{ targets[e.name]={sets:e.sets,reps:e.reps,rest:e.rest,note:e.note}; });
   const tbl=document.createElement('table'); tbl.className='ex-tbl';
   tbl.innerHTML=`<thead><tr>
     <th class="ex-name">Exercise</th>
@@ -1730,6 +1738,16 @@ function exerciseRow(ex,idx,log,showW,target){
   if(ex.done){ const dot=document.createElement('span'); dot.className='ex-done-dot'; dot.textContent='✓'; dot.title='Client checked this off'; nameTd.appendChild(dot); }
   const nameIn=document.createElement('input'); nameIn.value=ex.name||''; nameIn.placeholder='Exercise';
   nameIn.addEventListener('input',()=>{ex.name=nameIn.value; softSave();}); nameTd.appendChild(nameIn); tr.appendChild(nameTd);
+  // always-visible requirement line (target sets/reps/rest + coaching cue)
+  const tparts=[];
+  if(target.sets||target.reps) tparts.push('Target '+[target.sets,target.reps].filter(Boolean).join(' × '));
+  if(target.rest) tparts.push('rest '+target.rest);
+  if(tparts.length || target.note){
+    const meta=document.createElement('div'); meta.className='ex-target';
+    meta.innerHTML=(tparts.length?'<span class="ex-tgt">'+esc(tparts.join(' · '))+'</span>':'')
+      +(target.note?'<span class="ex-cue">'+(tparts.length?' — ':'')+esc(target.note)+'</span>':'');
+    nameTd.appendChild(meta);
+  }
   const mk=(key,ph)=>{ const td=document.createElement('td'); td.className='col-num';
     const inp=document.createElement('input'); inp.value=ex[key]||''; inp.placeholder=ph||'';
     inp.addEventListener('input',()=>{ex[key]=inp.value; softSave();}); td.appendChild(inp); return td; };
