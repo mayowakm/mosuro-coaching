@@ -364,8 +364,19 @@ async function runSaveCloud(){
 function key(w,wid){return w+'|'+wid;}
 function getLog(w,wid){
   const k=key(w,wid);
-  if(!state.logs[k]){ const t=state.plan.find(x=>x.id===wid);
-    state.logs[k]={completed:false,date:'',duration:'',effort:0,observations:'',exercises:(t?t.exercises:[]).map(e=>({name:e.name,weight:'',sets:'',reps:'',done:false}))}; }
+  const t=state.plan.find(x=>x.id===wid);
+  const planEx=(t?t.exercises:[])||[];
+  if(!state.logs[k]){
+    state.logs[k]={completed:false,date:'',duration:'',effort:0,observations:'',
+      exercises:planEx.map(e=>({name:e.name,weight:'',sets:'',reps:'',done:false}))};
+  } else if(planEx.length){
+    // additive reconcile: pull in exercises the coach added later; never drop entered data
+    const log=state.logs[k];
+    const have=new Set((log.exercises||[]).map(e=>e&&e.name));
+    let added=false;
+    planEx.forEach(pe=>{ if(!have.has(pe.name)){ log.exercises.push({name:pe.name,weight:'',sets:'',reps:'',done:false}); added=true; } });
+    if(added && log.completed) log.completed=false; // new work appeared → reopen
+  }
   return state.logs[k];
 }
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2000);}
