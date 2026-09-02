@@ -32,7 +32,7 @@
   }
   h1,h2,h3 { font-family: 'DM Serif Display', Georgia, serif; font-weight: 400; }
   .wrap { max-width: 1120px; margin: 0 auto; padding: 0 18px; }
-
+ 
   /* HEADER */
   .topbar {
     background: var(--ink); color: var(--white);
@@ -69,7 +69,7 @@
   .auth-spin{ color:#1f5fbf; font-weight:600; padding:12px; }
   .auth-msg{ font-size:13px; color:#12131a; margin-top:14px; min-height:18px; }
   .auth-fine{ font-size:11.5px; color:#8a8172; margin-top:16px; line-height:1.5; }
-
+ 
   /* TABS */
   .tabs {
     position: sticky; top:0; z-index:40; background:var(--paper);
@@ -84,19 +84,19 @@
   }
   .tab:hover { color:var(--ink); }
   .tab.active { color:var(--accent); border-bottom-color:var(--accent); }
-
+ 
   main { padding-top: 26px; }
   .panel { display:none; animation: fade .25s ease; }
   .panel.active { display:block; }
   @keyframes fade { from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;} }
-
+ 
   .section-eyebrow {
     font-size:10.5px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
     color:var(--accent); margin-bottom:5px;
   }
   .panel-title { font-size:23px; letter-spacing:-.2px; margin-bottom:3px; }
   .panel-sub { color:var(--muted); font-size:13px; margin-bottom:22px; }
-
+ 
   /* CARDS */
   .card { background:var(--card); border:1px solid var(--rule); border-radius:14px; box-shadow:var(--shadow); }
   .stat-grid { display:grid; grid-template-columns:repeat(6,1fr); gap:12px; margin-bottom:22px; }
@@ -108,20 +108,20 @@
   .stat.hl { background: var(--accent); border-color:var(--accent); }
   .stat.hl .k { color:rgba(255,255,255,.8); }
   .stat.hl .v, .stat.hl .u { color:#fff; }
-
+ 
   .grid-2 { display:grid; grid-template-columns:1.35fr 1fr; gap:18px; }
   .grid-2.even { grid-template-columns:1fr 1fr; }
   .card-pad { padding:20px 22px; }
   .card-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; gap:10px; flex-wrap:wrap; }
   .card-head h3 { font-size:17px; }
   .card-head .hint { font-size:11.5px; color:var(--muted); }
-
+ 
   /* PROGRESS BAR */
   .goal-bar-wrap { margin-top:4px; }
   .goal-track { height:14px; background:var(--accent-soft); border-radius:999px; overflow:hidden; position:relative; }
   .goal-fill { height:100%; background:linear-gradient(90deg,var(--accent),var(--accent-deep)); border-radius:999px; transition:width .5s; }
   .goal-meta { display:flex; justify-content:space-between; font-size:12px; color:var(--muted); margin-top:7px; font-weight:600; }
-
+ 
   /* CHART */
   .chart-holder { width:100%; }
   svg.chart { width:100%; height:auto; display:block; overflow:visible; }
@@ -130,7 +130,7 @@
   .legend span { display:flex; align-items:center; gap:6px; color:var(--muted); font-weight:600; }
   .legend i { width:11px; height:11px; border-radius:3px; display:inline-block; }
   .dashline { border:none; border-top:1.5px dashed var(--warn); width:14px; }
-
+ 
   /* FORMS */
   label.fl { font-size:10.5px; font-weight:700; letter-spacing:.7px; text-transform:uppercase; color:var(--muted); display:block; margin-bottom:5px; }
   input, select, textarea {
@@ -143,7 +143,7 @@
   .form-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:13px 14px; }
   .field.span2 { grid-column:span 2; }
   .field.span4 { grid-column:span 4; }
-
+ 
   .btn {
     font-family:'DM Sans',sans-serif; font-weight:600; font-size:13.5px; cursor:pointer;
     border-radius:9px; padding:10px 18px; border:1px solid transparent; transition:.15s; white-space:nowrap;
@@ -156,7 +156,7 @@
   .btn-danger { color:#b0341f; }
   .btn-danger:hover { background:#fbecea; border-color:#e7b7ae; }
   .btn-row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
-
+ 
   /* TABLE */
   .tbl-scroll { overflow-x:auto; }
   table { width:100%; border-collapse:collapse; font-size:13px; min-width:640px; }
@@ -170,7 +170,7 @@
   .icon-btn.del:hover { color:#b0341f; background:#fbecea; }
   .icon-btn.send { color:#fff; background:var(--accent,#1f5fbf); white-space:nowrap; }
   .icon-btn.send:hover { color:#fff; background:#194f9e; }
-
+ 
   /* WORKOUTS */
   .week-nav { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px; }
   .week-chip {
@@ -183,10 +183,10 @@
   .week-chip .dot { width:7px; height:7px; border-radius:50%; background:var(--rule); }
   .week-chip.active .dot { background:#fff; }
   .week-chip .dot.done { background:var(--good); }
-
+ 
   .week-focus { background:var(--accent-soft); border-left:3px solid var(--accent); border-radius:0 10px 10px 0; padding:12px 16px; font-size:13px; margin-bottom:18px; }
   .week-focus b { color:var(--accent-deep); }
-
+ 
   .wcard { margin-bottom:16px; overflow:hidden; }
   .wcard-head { display:flex; align-items:center; gap:13px; padding:15px 20px; border-bottom:1px solid var(--rule); cursor:pointer; }
   .wtype { font-size:10px; font-weight:700; letter-spacing:.8px; text-transform:uppercase; padding:4px 9px; border-radius:6px; color:#fff; white-space:nowrap; }
@@ -202,7 +202,7 @@
   .wcard.open .chev { transform:rotate(90deg); }
   .wbody { display:none; padding:18px 20px 20px; }
   .wcard.open .wbody { display:block; }
-
+ 
   .ex-tbl { width:100%; border-collapse:collapse; font-size:13px; min-width:0; margin-bottom:6px; }
   .ex-tbl th { padding:6px 8px; font-size:9.5px; border-bottom:1.5px solid var(--rule); }
   .ex-tbl td { padding:5px 6px; border-bottom:1px solid #efe8db; white-space:normal; }
@@ -216,31 +216,31 @@
   .ex-target .ex-tgt{ color:var(--accent,#1f5fbf); font-weight:700; }
   .ex-target .ex-cue{ color:var(--muted); font-style:italic; }
   .ex-del:hover { color:#b0341f; }
-
+ 
   .sess-meta { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:16px; }
   .obs-label { font-size:10.5px; font-weight:700; letter-spacing:.7px; text-transform:uppercase; color:var(--muted); margin:14px 0 6px; }
-
+ 
   .empty-note { color:var(--muted); font-style:italic; font-size:13px; padding:18px 0; }
-
+ 
   /* DATA / SHARE */
   .share-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
   .data-card { padding:22px; }
   .data-card h3 { font-size:17px; margin-bottom:6px; }
   .data-card p { color:var(--muted); font-size:13px; margin-bottom:14px; }
   .callout { background:var(--accent-soft); border:1px solid #cdddf5; border-radius:10px; padding:14px 16px; font-size:12.5px; color:var(--accent-deep); line-height:1.6; }
-
+ 
   .footer { text-align:center; margin-top:44px; padding-top:26px; border-top:2px solid var(--ink); }
   .footer .tag { font-family:'DM Serif Display',serif; font-style:italic; font-size:19px; color:var(--accent); }
   .footer .hash { margin-top:9px; font-size:12px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--muted); }
   .footer .cred { margin-top:12px; font-size:11px; color:var(--muted); }
-
+ 
   .toast {
     position:fixed; bottom:22px; left:50%; transform:translateX(-50%) translateY(20px);
     background:var(--ink); color:#fff; padding:11px 20px; border-radius:10px; font-size:13px; font-weight:600;
     opacity:0; pointer-events:none; transition:.25s; z-index:200; box-shadow:0 8px 30px rgba(0,0,0,.25);
   }
   .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
-
+ 
   @media (max-width:900px){
     .stat-grid{ grid-template-columns:repeat(3,1fr); }
     .grid-2, .grid-2.even, .share-grid{ grid-template-columns:1fr; }
@@ -252,7 +252,7 @@
     .sess-meta{ grid-template-columns:1fr; }
     .brand h1{ font-size:23px; }
   }
-
+ 
   /* equipment + filters */
   .eq-grid{ display:flex; flex-wrap:wrap; gap:8px; }
   .eq-chip{ display:inline-flex; align-items:center; gap:7px; border:1.5px solid var(--rule); background:var(--white); border-radius:999px; padding:7px 13px; font-size:12.5px; font-weight:600; color:var(--muted); cursor:pointer; }
@@ -263,7 +263,7 @@
   .chk input{ width:15px; height:15px; accent-color:var(--accent); }
   .add-lib{ display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
   .add-lib input{ flex:2; min-width:150px; } .add-lib select{ flex:1; min-width:110px; }
-
+ 
   /* builder */
   .bld{ margin-bottom:16px; padding:16px 18px; }
   .bld-head{ display:flex; align-items:center; gap:11px; flex-wrap:wrap; }
@@ -283,7 +283,7 @@
   .bld-tbl tr.exwarn td{ background:#fdf6f0; }
   .eq-btn{ background:var(--accent-soft); border:1px solid #cdddf5; color:var(--accent-deep); border-radius:7px; padding:6px 9px; font-size:12px; font-weight:600; cursor:pointer; white-space:nowrap; max-width:150px; overflow:hidden; text-overflow:ellipsis; }
   .eq-btn:hover{ border-color:var(--accent); }
-
+ 
   /* library list */
   .lib-group{ margin-bottom:18px; }
   .lib-muscle{ font-family:'DM Serif Display',serif; font-size:15px; border-bottom:1px solid var(--rule); padding-bottom:5px; margin-bottom:8px; }
@@ -292,7 +292,7 @@
   .lib-item{ display:flex; align-items:center; gap:8px; border:1px solid var(--rule); border-radius:9px; padding:9px 11px; background:#fffdf9; }
   .lib-item.dim{ opacity:.55; }
   .li-name{ font-weight:600; font-size:13.5px; } .li-eq{ font-size:11px; color:var(--muted); margin-top:2px; }
-
+ 
   /* modals */
   .overlay{ position:fixed; inset:0; background:rgba(18,19,26,.5); display:none; align-items:flex-end; justify-content:center; z-index:100; }
   .overlay.show{ display:flex; }
@@ -313,9 +313,9 @@
   .cr-tag{ font-size:10px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; color:var(--accent); background:#fff; border:1px solid #cdddf5; padding:1px 7px; border-radius:999px; margin-left:6px; }
   .add-client{ display:flex; gap:9px; flex-wrap:wrap; align-items:center; }
   .add-client input{ flex:1; min-width:130px; }
-
+ 
   @media (max-width:600px){ .lib-items{ grid-template-columns:1fr; } .overlay{ align-items:stretch; } .sheet2{ max-height:100vh; border-radius:0; } }
-
+ 
   @media print {
     #tab-library, #builder .no-print, #equipEditor{ display:none !important; }
     .bld-actions, .eq-btn{ display:none !important; }
@@ -339,7 +339,7 @@
 </style>
 </head>
 <body>
-
+ 
 <div id="authGate">
   <div class="auth-card">
     <div class="auth-brand">Mosuro <em>Coaching</em></div>
@@ -354,7 +354,7 @@
     <p class="auth-fine">One-tap magic-link sign-in — no password. This app is for the trainer; clients use the separate workout logger.</p>
   </div>
 </div>
-
+ 
 <div class="topbar">
   <div class="wrap">
     <div class="brand">
@@ -370,6 +370,9 @@
         <span style="color:#b9b1a3;">Phase</span>
         <select id="phaseSelect" onchange="setActivePhase(this.value)"></select>
       </div>
+      <button class="phase-pill cloud-only" id="refreshBtn" style="display:none;cursor:pointer;border:none;font-family:inherit;" onclick="refreshFromCloud()" title="Pull the latest data from the cloud — use this to see a client's newest completed sessions">
+        <span id="refreshLabel">↻ Refresh</span>
+      </button>
       <div class="phase-pill cloud-only" id="acctPill" style="display:none;">
         <span style="color:#b9b1a3;" id="coachWho">account</span>
         <button onclick="doLogout()" style="background:none;border:none;color:#fff;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;padding:0 0 0 4px;">Sign out</button>
@@ -377,7 +380,7 @@
     </div>
   </div>
 </div>
-
+ 
 <div class="tabs no-print">
   <div class="wrap">
     <button class="tab active" data-tab="dashboard" onclick="switchTab('dashboard')">Dashboard</button>
@@ -388,17 +391,17 @@
     <button class="tab" data-tab="data" onclick="switchTab('data')">Data &amp; Share</button>
   </div>
 </div>
-
+ 
 <main class="wrap">
-
+ 
   <!-- DASHBOARD -->
   <section class="panel active" id="tab-dashboard">
     <div class="section-eyebrow" id="dashEyebrow">Phase 1 · Overview</div>
     <h2 class="panel-title">Progress dashboard</h2>
     <p class="panel-sub">Everything at a glance — journey to goal, latest numbers, and training consistency.</p>
-
+ 
     <div class="stat-grid" id="statGrid"></div>
-
+ 
     <div class="grid-2">
       <div class="card card-pad">
         <div class="card-head">
@@ -421,7 +424,7 @@
         </div>
       </div>
     </div>
-
+ 
     <div class="grid-2 even" style="margin-top:18px;">
       <div class="card card-pad">
         <div class="card-head">
@@ -439,13 +442,13 @@
       </div>
     </div>
   </section>
-
+ 
   <!-- MEASUREMENTS -->
   <section class="panel" id="tab-measurements">
     <div class="section-eyebrow">Body metrics</div>
     <h2 class="panel-title">Measurements &amp; check-ins</h2>
     <p class="panel-sub">Log weight and measurements each week. Everything here feeds the dashboard.</p>
-
+ 
     <div class="card card-pad" id="measFormCard" style="margin-bottom:18px;">
       <div class="card-head"><h3 id="measFormTitle">Add a check-in</h3></div>
       <div class="form-grid">
@@ -465,7 +468,7 @@
         <button class="btn btn-ghost" id="measCancelBtn" style="display:none;" onclick="cancelEditMeasurement()">Cancel</button>
       </div>
     </div>
-
+ 
     <div class="grid-2 even" style="margin-bottom:18px;">
       <div class="card card-pad">
         <div class="card-head"><h3>Weight trend</h3></div>
@@ -487,7 +490,7 @@
         <div class="chart-holder" id="metricChart"></div>
       </div>
     </div>
-
+ 
     <div class="card card-pad">
       <div class="card-head"><h3>All check-ins</h3><span class="hint" id="measCount"></span></div>
       <div class="tbl-scroll">
@@ -495,7 +498,7 @@
       </div>
     </div>
   </section>
-
+ 
   <!-- WORKOUTS -->
   <section class="panel" id="tab-workouts">
     <div class="section-eyebrow" id="woEyebrow">Phase 1</div>
@@ -509,24 +512,24 @@
     </div>
     <div id="workoutList"></div>
   </section>
-
+ 
   <!-- PLAN & PHASES -->
   <section class="panel" id="tab-plan">
     <div class="section-eyebrow">Build the plan</div>
     <h2 class="panel-title">Plan &amp; phases</h2>
     <p class="panel-sub">Edit every session, exercise, and rep scheme for <b id="planPhaseName">Phase 1</b>. Starts from the default template — change anything you like.</p>
-
+ 
     <div class="card card-pad" style="margin-bottom:18px;">
       <div class="card-head"><h3>Client equipment</h3><span class="hint">Exercises needing gear that’s unchecked get a ⚠ flag</span></div>
       <div class="eq-grid" id="equipEditor"></div>
     </div>
-
+ 
     <div class="card-head" style="margin-bottom:10px;">
       <h3 style="font-size:17px;">Sessions in this phase</h3>
       <button class="btn btn-ghost btn-sm no-print" onclick="printPhasePlan()">🖨 Print phase plan</button>
     </div>
     <div id="builder"></div>
-
+ 
     <div class="card card-pad" style="margin-top:22px;">
       <div class="card-head">
         <h3>Phase roadmap</h3>
@@ -536,13 +539,13 @@
       <p class="empty-note" style="padding-bottom:0;">Each phase keeps its own workouts. A new phase starts as a copy of the previous one, so you only adjust what changes.</p>
     </div>
   </section>
-
+ 
   <!-- LIBRARY -->
   <section class="panel" id="tab-library">
     <div class="section-eyebrow">Exercise library</div>
     <h2 class="panel-title">Workout library</h2>
     <p class="panel-sub">Every exercise, grouped by muscle and tagged with equipment. Add your own, and pull from here when building sessions.</p>
-
+ 
     <div class="card card-pad" style="margin-bottom:18px;">
       <div class="filter-row">
         <input id="libSearch" placeholder="Search exercises…" oninput="renderLibrary()" style="flex:2;min-width:160px;">
@@ -559,19 +562,19 @@
         <button class="btn btn-primary btn-sm" onclick="addLibraryExercise()">Add</button>
       </div>
     </div>
-
+ 
     <div class="card card-pad">
       <div class="card-head"><h3>All exercises</h3><span class="hint" id="libCount"></span></div>
       <div id="libList"></div>
     </div>
   </section>
-
+ 
   <!-- DATA & SHARE -->
   <section class="panel" id="tab-data">
     <div class="section-eyebrow">Clients &amp; data</div>
     <h2 class="panel-title">Clients, data &amp; share</h2>
     <p class="panel-sub">Manage every client from here, hand each one their own workout logger, and pull their logged sessions back in.</p>
-
+ 
     <div class="card data-card no-print" style="margin-bottom:18px;">
       <h3>Your clients</h3>
       <p>Switch between clients any time from the <b>Client</b> selector at the top. Each client keeps their own program, phases, logs, and equipment.</p>
@@ -584,11 +587,11 @@
         <button class="btn btn-primary btn-sm" onclick="addClient()">+ Add client</button>
       </div>
     </div>
-
+ 
     <div class="callout no-print" style="margin-bottom:18px;">
       <b>How the client logger works.</b> There’s no shared server, so each client uses their own copy of the logger file. Give them their <b>setup code</b> once (below) — it loads their name, email, and current phase workouts into the logger. They log in your absence, tap <b>Share with coach</b>, and send you the result; paste it into <b>Import from client</b> and it routes to the right client automatically. You can also log in-person sessions yourself in the <b>Workouts</b> tab.
     </div>
-
+ 
     <div class="share-grid">
       <div class="card data-card">
         <h3>Client logger setup code</h3>
@@ -634,14 +637,14 @@
       </div>
     </div>
   </section>
-
+ 
   <div class="footer">
     <div class="tag">“Go far… Go fast… Go easy… Just go!”</div>
     <div class="hash">#activedad &nbsp;·&nbsp; #stayactive</div>
     <div class="cred" id="footCred">Mayowa Mosuro · Certified Personal Trainer · Confidential</div>
   </div>
 </main>
-
+ 
 <!-- LIBRARY PICKER MODAL -->
 <div class="overlay" id="pickerModal">
   <div class="sheet2">
@@ -668,7 +671,7 @@
     </div>
   </div>
 </div>
-
+ 
 <!-- EQUIPMENT PICKER MODAL -->
 <div class="overlay" id="equipModal">
   <div class="sheet2 narrow">
@@ -679,7 +682,7 @@
     <button class="btn btn-primary" style="margin-top:16px;" onclick="closeEquip()">Done</button>
   </div>
 </div>
-
+ 
 <div class="overlay" id="copyModal">
   <div class="sheet2 narrow">
     <button class="close-x" onclick="closeCopy()">×</button>
@@ -696,21 +699,21 @@
     <button class="btn btn-primary" id="copyGo" style="width:100%;justify-content:center;" onclick="doCopy()">Copy</button>
   </div>
 </div>
-
+ 
 <div class="toast" id="toast"></div>
-
+ 
 <script>
 /* ============================ STATE ============================ */
 const STORE_KEY = 'isioma_tracker_v1';
-
+ 
 /* Master equipment options (used for tagging + client availability) */
 const EQUIPMENT = ['Bodyweight','Dumbbells','Barbell','Kettlebell','Resistance bands','Bench','Pull-up bar','Cable machine','Machines','Treadmill','Bike','Rower','Stairmaster','Battle ropes','Slam ball','Wall ball','Medicine ball','Box/step','Jump rope','TRX/Suspension'];
-
+ 
 /* Muscle groups (display order) */
 const MUSCLES = ['Chest','Back','Shoulders','Quads','Hamstrings','Glutes','Calves','Biceps','Triceps','Core','Full Body','Cardio'];
-
+ 
 function ex(name,muscle,equipment,type,sets,reps,rest,note){ return {name,muscle,equipment,type,sets:sets||'',reps:reps||'',rest:rest||'',note:note||''}; }
-
+ 
 /* Default weekly template — the starting point the coach can edit freely */
 const WEEKLY_TEMPLATE = [
   {
@@ -765,7 +768,7 @@ const WEEKLY_TEMPLATE = [
   }
 ];
 function cloneWorkouts(){ return JSON.parse(JSON.stringify(WEEKLY_TEMPLATE)); }
-
+ 
 /* Exercise library — grouped by muscle, tagged with equipment. Coach can add/edit/remove. */
 const LIBRARY_SEED = [
   // Chest
@@ -953,18 +956,18 @@ const LIBRARY_SEED = [
   ex('Leg swings','Full Body',['Bodyweight'],'mobility'),
   ex('Foam roll (full body)','Full Body',['Bodyweight'],'mobility')
 ].map((e,i)=>Object.assign({id:'lib'+i}, e));
-
+ 
 const WEEK_FOCUS = [
   'Baseline week. Establish form, find working weights, and finish every session. Note starting weights for progression.',
   'Add intensity. Nudge HIIT work intervals up and add a little load to the strength lifts where form is solid.',
   'Add volume. Aim for an extra round or set where possible. Recovery and sleep matter more this week.',
   'Peak the block. Push for personal bests on the strength day, then ease off slightly to close out the phase strong.'
 ];
-
+ 
 function baselineMeas(w){ return [ { id:uid(), date:new Date().toISOString().slice(0,10), weight:w, waist:null, hips:null, chest:null, arm:null, thigh:null, bf:null, hr:null, notes:'Starting baseline' } ]; }
 const EQUIP_HOME = ['Bodyweight','Dumbbells','Kettlebell','Resistance bands','Bench','Box/step','Jump rope','Treadmill','Bike','Stairmaster'];
 const EQUIP_GYM = ['Bodyweight','Dumbbells','Barbell','Kettlebell','Resistance bands','Bench','Pull-up bar','Cable machine','Machines','Treadmill','Bike','Rower','Stairmaster','Battle ropes','Slam ball','Wall ball','Medicine ball','Box/step','Jump rope','TRX/Suspension'];
-
+ 
 function isiomaClient(){
   return { id:'c-isioma', name:'Isioma Coker', email:'', trainer:'Mayowa Mosuro', startWeight:242, goalWeight:180,
     equipment:EQUIP_HOME.slice(), activePhase:'phase-1',
@@ -1076,7 +1079,7 @@ function mariamClient(){
   return { id:'c-mariam', name:'Mariam Amusan', email:'', trainer:'Mayowa Mosuro', startWeight:306, goalWeight:220,
     equipment:EQUIP_GYM.slice(), activePhase:'phase-1', phases, logs:{}, measurements: baselineMeas(306) };
 }
-
+ 
 function bareDefault(){
   return { activeClient:'c-isioma', clients:[ isiomaClient(), mariamClient() ], library: JSON.parse(JSON.stringify(LIBRARY_SEED)) };
 }
@@ -1091,11 +1094,11 @@ function installAccessors(s){
 }
 function C(){ return state.clients.find(c=>c.id===state.activeClient) || state.clients[0]; }
 function defaultState(){ return installAccessors(bareDefault()); }
-
+ 
 function uid(){ return (window.crypto&&crypto.randomUUID)? crypto.randomUUID() : 'id-'+Math.random().toString(36).slice(2,10)+Math.random().toString(36).slice(2,6); }
 function esc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 function numOrNull(v){ return v==null||v===''? null : (typeof v==='number'? v : (isNaN(parseFloat(v))?null:parseFloat(v))); }
-
+ 
 /* ============================================================
    SUPABASE (cloud) — fill these two in to go live.
    Leave the PASTE_ placeholders to keep running fully offline
@@ -1112,7 +1115,7 @@ function loggerURL(){
   catch(e){ return location.origin + '/' + String(LOGGER_PATH).replace(/^\//,''); }
 }
 let sb = null, COACH_ID = null, COACH_EMAIL = null;
-
+ 
 function showLogin(msg){
   document.body.classList.add('gated');
   const g=document.getElementById('authGate'); if(g) g.classList.add('show');
@@ -1163,7 +1166,7 @@ async function afterLogin(session){
   }catch(e){ showLogin('Signed in, but loading your data failed: '+(e.message||e)); }
 }
 async function doLogout(){ try{ if(sb) await sb.auth.signOut(); }catch(e){} location.reload(); }
-
+ 
 async function loadStateCloud(){
   const q=(t)=>sb.from(t).select('*');
   const res = await Promise.all([q('clients'),q('phases'),q('workouts'),q('logs'),q('measurements'),q('library')]);
@@ -1176,7 +1179,7 @@ async function loadStateCloud(){
   phases.slice().sort((a,b)=>(a.sort_order||0)-(b.sort_order||0)).forEach(p=>{ phaseById[p.id]=p;
     const c=byId[p.client_id]; if(c) c.phases.push({ id:p.id, name:p.name, startWeight:numOrNull(p.start_weight), targetWeight:numOrNull(p.target_weight), weeks:p.weeks||4, focus:p.focus||'', workouts:[] }); });
   workouts.slice().sort((a,b)=>(a.sort_order||0)-(b.sort_order||0)).forEach(w=>{ const p=phaseById[w.phase_id]; if(!p) return; const c=byId[p.client_id]; if(!c) return;
-    const host=c.phases.find(x=>x.id===w.phase_id); if(host) host.workouts.push({ id:w.wkey, type:w.type, name:w.name, sched:w.sched, tracksWeight:!!w.tracks_weight, note:w.note||'', exercises:Array.isArray(w.exercises)?w.exercises:[] }); });
+    const host=c.phases.find(x=>x.id===w.phase_id); if(host) host.workouts.push({ id:w.wkey, type:w.type, name:w.name, sched:w.sched, tracksWeight:!!w.tracks_weight, note:w.note||'', exercises:Array.isArray(w.exercises)?w.exercises:[], weeks:(Array.isArray(w.weeks)&&w.weeks.length)?w.weeks.slice():null }); });
   logs.forEach(l=>{ const c=byId[l.client_id]; if(!c) return;
     c.logs[l.phase_id+'|'+l.week+'|'+l.wkey]={ completed:!!l.completed, date:l.date||'', duration:l.duration||'', avgHR:l.avg_hr||'', effort:l.effort||0, observations:l.observations||'', exercises:Array.isArray(l.exercises)?l.exercises:[], _clientLogged:!!l.client_logged }; });
   measurements.forEach(m=>{ const c=byId[m.client_id]; if(!c) return;
@@ -1194,7 +1197,7 @@ async function loadStateCloud(){
     library: library.length ? library.map(x=>({ id:x.id, name:x.name, muscle:x.muscle, equipment:Array.isArray(x.equipment)?x.equipment:[], type:x.type })) : JSON.parse(JSON.stringify(LIBRARY_SEED)) };
   return installAccessors(s);
 }
-
+ 
 /* ---- cloud sync (debounced full sync of active client + library) ---- */
 let _cTimer=null,_cBusy=false,_cAgain=false;
 function saveStateCloud(){ clearTimeout(_cTimer); _cTimer=setTimeout(runCloudSync,700); }
@@ -1216,7 +1219,7 @@ async function syncClientCloud(c){
   const lp=new Set(c.phases.map(p=>p.id));
   const delP=rp.filter(r=>!lp.has(r.id)).map(r=>r.id);
   if(delP.length) await sb.from('phases').delete().in('id',delP);
-  let wRows=[]; c.phases.forEach(p=>(p.workouts||[]).forEach((w,i)=> wRows.push({ phase_id:p.id, wkey:w.id, type:w.type, name:w.name, sched:w.sched||'', tracks_weight:!!w.tracksWeight, note:w.note||'', exercises:w.exercises||[], sort_order:i })));
+  let wRows=[]; c.phases.forEach(p=>(p.workouts||[]).forEach((w,i)=> wRows.push({ phase_id:p.id, wkey:w.id, type:w.type, name:w.name, sched:w.sched||'', tracks_weight:!!w.tracksWeight, note:w.note||'', exercises:w.exercises||[], sort_order:i, weeks:(Array.isArray(w.weeks)&&w.weeks.length)?w.weeks:null })));
   if(wRows.length) await sb.from('workouts').upsert(wRows,{ onConflict:'phase_id,wkey' });
   const phaseIds=c.phases.map(p=>p.id);
   if(phaseIds.length){
@@ -1291,11 +1294,11 @@ function normalizeIds(s){
   (s.library||[]).forEach(x=>{ if(!x.id||usedL.has(x.id)) x.id='lib-'+uid(); usedL.add(x.id); });
   return s;
 }
-
+ 
 let state = null;
 let editingMeasurementId = null;
 let activeWeek = 1;
-
+ 
 function loadState(){
   try{
     const raw = localStorage.getItem(STORE_KEY);
@@ -1349,7 +1352,7 @@ function saveState(){
   try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
   catch(e){ /* storage unavailable; data stays in-memory for this session */ }
 }
-
+ 
 /* ============================ HELPERS ============================ */
 function currentPhase(){ return state.phases.find(p=>p.id===state.activePhase) || state.phases[0]; }
 function sortedMeasurements(){ return [...state.measurements].sort((a,b)=> (a.date<b.date?-1:a.date>b.date?1:0)); }
@@ -1373,6 +1376,25 @@ function getLog(phaseId,week,wid){
   }
   return state.logs[k];
 }
+/* Weekly overrides: a workout can be scoped to specific weeks of a phase via
+   its optional `weeks` array (e.g. [2,4]). No `weeks` (or an empty array)
+   means "applies every week" — this is the default for all existing data,
+   so nothing that doesn't use this feature changes behavior. */
+function workoutAppliesToWeek(t,w){ return !t.weeks || !t.weeks.length || t.weeks.includes(w); }
+function parseWeeksInput(str){
+  const s=(str||'').trim();
+  if(!s) return null;
+  const out=new Set();
+  s.split(',').forEach(part=>{
+    part=part.trim(); if(!part) return;
+    const m=part.match(/^(\d+)\s*-\s*(\d+)$/);
+    if(m){ let a=+m[1], b=+m[2]; if(a>b){const t=a;a=b;b=t;} for(let i=a;i<=b;i++) out.add(i); }
+    else { const n=parseInt(part,10); if(!isNaN(n)) out.add(n); }
+  });
+  const arr=[...out].sort((a,b)=>a-b);
+  return arr.length? arr : null;
+}
+function weeksToInput(weeks){ return (Array.isArray(weeks)&&weeks.length)? weeks.join(',') : ''; }
 function phaseWorkoutStats(phaseId){
   const p = phaseById(phaseId);
   const workouts = p.workouts||[];
@@ -1380,6 +1402,7 @@ function phaseWorkoutStats(phaseId){
   for(let w=1; w<=p.weeks; w++){
     let dw=0;
     workouts.forEach(t=>{
+      if(!workoutAppliesToWeek(t,w)) return;
       total++;
       const k=logKey(phaseId,w,t.id);
       if(state.logs[k] && state.logs[k].completed){ done++; dw++; }
@@ -1419,7 +1442,7 @@ function toast(msg){
   const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
   clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),2000);
 }
-
+ 
 /* ============================ CHARTS (SVG) ============================ */
 function lineChart(el, opts){
   // opts: points:[{label,value}], goal, target, color, height
@@ -1468,7 +1491,7 @@ function lineChart(el, opts){
   });
   el.innerHTML=`<svg class="chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img">${g}</svg>`;
 }
-
+ 
 function barChart(el, opts){
   const data=opts.data; // [{label,value,max}]
   if(!data.length){ el.innerHTML='<div class="chart-empty">No sessions yet.</div>'; return; }
@@ -1492,16 +1515,16 @@ function barChart(el, opts){
   });
   el.innerHTML=`<svg class="chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img">${g}</svg>`;
 }
-
+ 
 /* ============================ RENDER: DASHBOARD ============================ */
 function renderDashboard(){
   const p=currentPhase();
   const start=state.client.startWeight, goal=state.client.goalWeight, cur=latestWeight();
   const lost=start-cur, totalToLose=start-goal, pctGoal=totalToLose>0? Math.max(0,Math.min(100,(lost/totalToLose)*100)):0;
   const stats=phaseWorkoutStats(p.id);
-
+ 
   document.getElementById('dashEyebrow').textContent = p.name+' · Overview';
-
+ 
   const cards=[
     {k:'Current weight', v:fmt(cur,1), u:'lbs', cls:'hl'},
     {k:'Lost so far', v:(lost>=0?'−':'+')+fmt(Math.abs(lost),1), u:'lbs', sub:(lost>=0?'on track':'above start'), subc:(lost>=0?'var(--good)':'var(--warn)')},
@@ -1516,11 +1539,11 @@ function renderDashboard(){
       <div class="v">${c.v} <span class="u">${c.u||''}</span></div>
       ${c.sub?`<div class="sub" style="color:${c.subc||'var(--muted)'}">${c.sub}</div>`:''}
     </div>`).join('');
-
+ 
   // weight chart
   const mpts = sortedMeasurements().filter(m=>m.weight!=null).map(m=>({label:m.date.slice(5), value:m.weight}));
   lineChart(document.getElementById('weightChart'), {points:mpts, goal:goal, target:p.targetWeight, color:'#1f5fbf', height:250});
-
+ 
   // overall goal block
   document.getElementById('goalBlock').innerHTML = `
     <div class="goal-bar-wrap">
@@ -1530,7 +1553,7 @@ function renderDashboard(){
     <p style="font-size:13px;color:var(--muted);margin-top:14px;line-height:1.6;">
       ${lost>=0? `<b style="color:var(--ink)">${fmt(lost,1)} lbs down</b> from the ${fmt(start,0)} lb start — ${fmt(Math.max(0,cur-goal),1)} lbs to go.` : `Currently ${fmt(Math.abs(lost),1)} lbs above the starting point. Trend the weekly average, not the daily number.`}
     </p>`;
-
+ 
   // phase goal block
   const pStart=p.startWeight, pTarget=p.targetWeight, pLost=pStart-cur, pTotal=pStart-pTarget, pPct=pTotal>0?Math.max(0,Math.min(100,(pLost/pTotal)*100)):0;
   document.getElementById('phaseGoalBlock').innerHTML = `
@@ -1538,14 +1561,14 @@ function renderDashboard(){
       <div class="goal-track"><div class="goal-fill" style="width:${pPct}%"></div></div>
       <div class="goal-meta"><span>${fmt(pStart,0)}</span><span>${fmt(pPct,0)}% of phase</span><span>${fmt(pTarget,0)} target</span></div>
     </div>`;
-
+ 
   // consistency
   document.getElementById('consistencyHint').textContent = stats.done+' of '+stats.total+' sessions';
   barChart(document.getElementById('consistencyChart'), {
     data: stats.perWeek.map((v,i)=>({label:'Wk '+(i+1), value:v})),
     max:4, target:4, height:230
   });
-
+ 
   // latest check-in
   const lm=latestMeasurement();
   if(lm){
@@ -1559,7 +1582,7 @@ function renderDashboard(){
     document.getElementById('latestBlock').innerHTML='<p class="empty-note">No check-ins yet.</p>';
   }
 }
-
+ 
 /* ============================ RENDER: MEASUREMENTS ============================ */
 function saveMeasurement(){
   const g=id=>document.getElementById(id).value;
@@ -1634,27 +1657,30 @@ function renderMeasurements(){
     </div></td></tr>`).join('');
   document.getElementById('measTable').innerHTML=head+'<tbody>'+(sorted.length?body:'<tr><td colspan="11" class="empty-note">No check-ins yet — add one above.</td></tr>')+'</tbody>';
 }
-
+ 
 /* ============================ RENDER: WORKOUTS ============================ */
 function renderWorkouts(){
   const p=currentPhase();
   document.getElementById('woEyebrow').textContent=p.name;
   if(activeWeek>p.weeks) activeWeek=1;
-  const workouts = p.workouts||[];
-  const nW = workouts.length;
-  // week nav
+  const allWorkouts = p.workouts||[];
+  // week nav — each week only counts the sessions actually scoped to it
   let nav='';
   for(let w=1; w<=p.weeks; w++){
-    let done=0; workouts.forEach(t=>{ if(state.logs[logKey(p.id,w,t.id)]?.completed) done++; });
-    const allDone=nW>0 && done===nW;
+    const wk=allWorkouts.filter(t=>workoutAppliesToWeek(t,w));
+    let done=0; wk.forEach(t=>{ if(state.logs[logKey(p.id,w,t.id)]?.completed) done++; });
+    const nWk=wk.length;
+    const allDone=nWk>0 && done===nWk;
     nav+=`<button class="week-chip ${w===activeWeek?'active':''}" onclick="setWeek(${w})">
-      <span class="dot ${allDone?'done':''}"></span>Week ${w} <span style="opacity:.7">(${done}/${nW})</span></button>`;
+      <span class="dot ${allDone?'done':''}"></span>Week ${w} <span style="opacity:.7">(${done}/${nWk})</span></button>`;
   }
   document.getElementById('weekNav').innerHTML=nav;
   const focus = WEEK_FOCUS[activeWeek-1] || 'Keep progressing — add load or intervals where form allows.';
   document.getElementById('weekFocus').innerHTML=`<b>Week ${activeWeek} focus.</b> ${focus}`;
-
-  // workout cards
+ 
+  // workout cards — only the sessions scoped to the active week
+  const workouts = allWorkouts.filter(t=>workoutAppliesToWeek(t,activeWeek));
+  const nW = workouts.length;
   const host=document.getElementById('workoutList'); host.innerHTML='';
   if(!nW){ host.innerHTML='<p class="empty-note">No sessions in this phase yet. Go to <b>Plan &amp; Phases</b> to build the workouts.</p>'; return; }
   workouts.forEach(t=>{
@@ -1681,14 +1707,14 @@ function buildSessionBody(t,log,phaseId){
   const note=document.createElement('p');
   note.style.cssText='font-size:12.5px;color:var(--muted);margin-bottom:14px;';
   note.textContent=t.note; frag.appendChild(note);
-
+ 
   // session meta
   const meta=document.createElement('div'); meta.className='sess-meta';
   meta.appendChild(metaField('Date completed','date',log.date,v=>{log.date=v; softSave();}));
   meta.appendChild(metaField('Time / duration','text',log.duration,v=>{log.duration=v; softSave();},'e.g. 42 min'));
   meta.appendChild(metaField('Avg HR (optional)','text',log.avgHR,v=>{log.avgHR=v; softSave();},'bpm'));
   frag.appendChild(meta);
-
+ 
   // exercise table — plan targets shown as placeholders
   const showW=t.tracksWeight;
   const targets={}; (t.exercises||[]).forEach(e=>{ targets[e.name]={sets:e.sets,reps:e.reps,rest:e.rest,note:e.note}; });
@@ -1700,20 +1726,20 @@ function buildSessionBody(t,log,phaseId){
   const tb=document.createElement('tbody');
   log.exercises.forEach((ex,idx)=>tb.appendChild(exerciseRow(ex,idx,log,showW,targets[ex.name])));
   tbl.appendChild(tb); frag.appendChild(tbl);
-
+ 
   const addBtn=document.createElement('button');
   addBtn.className='btn btn-ghost btn-sm no-print'; addBtn.style.marginTop='4px';
   addBtn.textContent='+ Add exercise';
   addBtn.onclick=()=>{ log.exercises.push({name:'',weight:'',sets:'',reps:''}); softSave(); tb.appendChild(exerciseRow(log.exercises[log.exercises.length-1],log.exercises.length-1,log,showW)); };
   frag.appendChild(addBtn);
-
+ 
   // observations
   const ol=document.createElement('div'); ol.className='obs-label'; ol.textContent='Observations'; frag.appendChild(ol);
   const ta=document.createElement('textarea');
   ta.placeholder='How did the session go? Energy, form cues, what to progress next time…';
   ta.value=log.observations||''; ta.addEventListener('input',()=>{log.observations=ta.value; softSave();});
   frag.appendChild(ta);
-
+ 
   // complete toggle
   const row=document.createElement('div'); row.className='btn-row'; row.style.marginTop='16px';
   const cbtn=document.createElement('button');
@@ -1762,14 +1788,14 @@ function exerciseRow(ex,idx,log,showW,target){
 let _saveT=null;
 function softSave(){ clearTimeout(_saveT); _saveT=setTimeout(saveState,250); }
 function setWeek(w){ activeWeek=w; renderWorkouts(); }
-
+ 
 /* ============================ RENDER: PLAN BUILDER ============================ */
 function renderPlan(){
   const p=currentPhase();
   document.getElementById('planPhaseName').textContent=p.name;
   renderEquipmentEditor();
   renderBuilder();
-
+ 
   const head=`<thead><tr><th>Phase</th><th>Start (lbs)</th><th>Target (lbs)</th><th>Weeks</th><th>Focus</th><th class="no-print"></th></tr></thead>`;
   const body=state.phases.map(p=>`<tr>
     <td><input value="${esc(p.name)}" style="min-width:90px" onchange="editPhase('${p.id}','name',this.value)"></td>
@@ -1795,7 +1821,7 @@ function addPhase(){
     workouts: JSON.parse(JSON.stringify(last.workouts||cloneWorkouts())) });
   saveState(); renderPhaseSelect(); renderPlan(); toast('Phase added — starts as a copy of the previous phase');
 }
-
+ 
 /* ---------- equipment editor ---------- */
 function renderEquipmentEditor(){
   const host=document.getElementById('equipEditor');
@@ -1810,7 +1836,7 @@ function toggleEquip(e,on){
   state.client.equipment=[...set];
   saveState(); renderEquipmentEditor(); renderBuilder();
 }
-
+ 
 /* ---------- plan builder ---------- */
 function renderBuilder(){
   const p=currentPhase();
@@ -1854,6 +1880,9 @@ function renderBuilder(){
           <input value="${esc(w.sched)}" onchange="editWo('${p.id}','${w.id}','sched',this.value)">
         </label>
         <label class="mini chk"><input type="checkbox" ${w.tracksWeight?'checked':''} onchange="editWo('${p.id}','${w.id}','tracksWeight',this.checked)"> Track weights</label>
+        <label class="mini">Weeks
+          <input value="${esc(weeksToInput(w.weeks))}" placeholder="All weeks" title="Which weeks of this phase this session applies to, e.g. 2,4 or 1-3. Leave blank for every week." onchange="editWoWeeks('${p.id}','${w.id}',this.value)" style="width:72px">
+        </label>
       </div>
       <input class="bld-note" value="${esc(w.note||'')}" placeholder="Coaching note for this session…" onchange="editWo('${p.id}','${w.id}','note',this.value)">
       ${missing.length?`<div class="miss-banner">⚠ ${missing.length} exercise${missing.length>1?'s':''} need${missing.length>1?'':'s'} equipment the client may not have. Swap or adjust below.</div>`:''}
@@ -1890,6 +1919,11 @@ function editWo(pid,wid,key,val){
   const w=workoutDef(pid,wid); if(!w) return;
   w[key]= key==='tracksWeight'? !!val : val;
   saveState(); if(key==='type'||key==='name'){ renderBuilder(); } renderWorkouts();
+}
+function editWoWeeks(pid,wid,val){
+  const w=workoutDef(pid,wid); if(!w) return;
+  w.weeks=parseWeeksInput(val);
+  saveState(); renderWorkouts(); toast(w.weeks? ('Applies weeks '+w.weeks.join(', ')) : 'Applies every week');
 }
 function editEx(pid,wid,ei,key,val){
   const w=workoutDef(pid,wid); if(!w||!w.exercises[ei]) return;
@@ -1931,7 +1965,7 @@ function resetPhaseWorkouts(pid){
   if(!confirm('Reset this phase’s workouts back to the default template? This replaces the current sessions (logged results are kept).')) return;
   phaseById(pid).workouts=cloneWorkouts(); saveState(); renderBuilder(); renderWorkouts(); toast('Reset to default template');
 }
-
+ 
 /* ---------- copy a session / phase from another client ---------- */
 let copyMode='session';
 function openCopy(mode){
@@ -1987,7 +2021,7 @@ function doCopy(){
     saveState(); renderPhaseSelect(); renderPlan(); closeCopy(); toast('Phase copied from '+src.name+' as a new phase');
   }
 }
-
+ 
 /* ---------- equipment picker for a single exercise ---------- */
 let equipCtx=null;
 function openEquip(pid,wid,ei){
@@ -2013,7 +2047,7 @@ function closeEquip(){
   if(libEquipId && !equipCtx){ libEquipId=null; renderLibrary(); }
   else { renderBuilder(); renderWorkouts(); }
 }
-
+ 
 /* ---------- library picker (add to session) ---------- */
 let pickerCtx=null;
 function openPicker(pid,wid){
@@ -2064,7 +2098,7 @@ function pickCustomToSession(){
   document.getElementById('pickCustomName').value='';
   saveState(); renderBuilder(); renderWorkouts(); renderLibrary(); toast('Added'+(document.getElementById('pickSaveLib').checked?' & saved to library':''));
 }
-
+ 
 /* ---------- library management tab ---------- */
 function renderLibrary(){
   const q=document.getElementById('libSearch')?document.getElementById('libSearch').value:'';
@@ -2132,7 +2166,7 @@ function deletePhase(id){
   if(state.activePhase===id) state.activePhase=state.phases[0].id;
   saveState(); renderPhaseSelect(); renderPlan(); renderAll(); toast('Phase deleted');
 }
-
+ 
 /* ============================ PHASE SELECT / TABS ============================ */
 function renderPhaseSelect(){
   const sel=document.getElementById('phaseSelect');
@@ -2150,7 +2184,7 @@ function switchTab(name){
   else if(name==='library') renderLibrary();
   window.scrollTo({top:0,behavior:'smooth'});
 }
-
+ 
 /* ============================ DATA & SHARE ============================ */
 function updateClient(){
   const c=state.client;
@@ -2299,7 +2333,7 @@ function buildSetupCode(){
   const c=C(); const p=currentPhase();
   const payload={ v:1, kind:'client-setup', clientId:c.id, client:c.name, email:c.email||'',
     coach:c.trainer, phaseName:p.name, totalWeeks:p.weeks,
-    workouts:(p.workouts||[]).map(w=>({ id:w.id, type:w.type, name:w.name, sched:w.sched, tracksWeight:w.tracksWeight, note:w.note,
+    workouts:(p.workouts||[]).map(w=>({ id:w.id, type:w.type, name:w.name, sched:w.sched, tracksWeight:w.tracksWeight, note:w.note, weeks:w.weeks||null,
       exercises:(w.exercises||[]).map(e=>({name:e.name, sets:e.sets, reps:e.reps, note:e.note})) })) };
   return b64(JSON.stringify(payload));
 }
@@ -2317,7 +2351,7 @@ function resetAll(){
   state=defaultState(); saveState(); editingMeasurementId=null; clearMeasForm(); activeWeek=1;
   paintClient(); renderPhaseSelect(); renderAll(); switchTab('dashboard'); toast('Reset complete');
 }
-
+ 
 /* ============================ PRINTOUTS ============================ */
 function printDoc(title, inner){
   const c=C();
@@ -2373,7 +2407,8 @@ function printPhasePlan(){
   let inner=`<div class="meta"><b>${esc(p.name)}</b> · ${p.weeks} weeks · target ${fmt(p.startWeight,0)} → ${fmt(p.targetWeight,0)} lbs</div>`;
   if(p.focus) inner+=`<div class="note" style="margin:6px 0 14px;">${esc(p.focus)}</div>`;
   (p.workouts||[]).forEach(w=>{
-    inner+=`<div class="sess"><div class="sess-h"><span class="badge ${badgeClass(w.type)}">${(w.type||'').toUpperCase()}</span><h3>${esc(w.name)}</h3><span class="sched">${esc(w.sched||'')}</span></div>`;
+    const weekTag=(Array.isArray(w.weeks)&&w.weeks.length)?`<span class="sched">· Weeks ${esc(w.weeks.join(', '))} only</span>`:'';
+    inner+=`<div class="sess"><div class="sess-h"><span class="badge ${badgeClass(w.type)}">${(w.type||'').toUpperCase()}</span><h3>${esc(w.name)}</h3><span class="sched">${esc(w.sched||'')}</span>${weekTag}</div>`;
     if(w.note) inner+=`<div class="note">${esc(w.note)}</div>`;
     inner+=`<table><thead><tr><th>Exercise</th><th class="n">Sets</th><th class="n">Reps</th><th class="n">Rest</th><th>Coaching cue</th></tr></thead><tbody>`;
     (w.exercises||[]).forEach(e=>{ inner+=`<tr><td><b>${esc(e.name)}</b>${e.muscle?` <span class="cue">· ${esc(e.muscle)}</span>`:''}</td><td class="n">${esc(e.sets||'—')}</td><td class="n">${esc(e.reps||'—')}</td><td class="n">${esc(e.rest||'—')}</td><td class="cue">${esc(e.note||'')}</td></tr>`; });
@@ -2384,7 +2419,7 @@ function printPhasePlan(){
 function printWeek(){
   const p=currentPhase(), wk=activeWeek;
   let inner=`<div class="meta"><b>${esc(p.name)}</b> · Week ${wk} of ${p.weeks}</div>`;
-  (p.workouts||[]).forEach(w=>{
+  (p.workouts||[]).filter(w=>workoutAppliesToWeek(w,wk)).forEach(w=>{
     const log=getLog(p.id,wk,w.id);
     const showW=w.tracksWeight;
     inner+=`<div class="sess"><div class="sess-h"><span class="badge ${badgeClass(w.type)}">${(w.type||'').toUpperCase()}</span><h3>${esc(w.name)}</h3><span class="sched">${esc(w.sched||'')}</span></div>`;
@@ -2424,11 +2459,27 @@ function printProgress(){
   inner+=`<h3 style="font-size:16px;margin:16px 0 6px;">Consistency — ${esc(p.name)}</h3><div class="cue">${perWeek||'No sessions logged yet.'}</div>`;
   printDoc('Progress Report', inner);
 }
-
+ 
 /* ============================ INIT ============================ */
 function renderAll(){ renderDashboard(); renderMeasurements(); renderWorkouts(); renderPlan(); renderLibrary(); }
+async function refreshFromCloud(){
+  if(!CLOUD) return;
+  const keepClient=state.activeClient, keepPhase=state.activePhase, keepWeek=activeWeek;
+  const lbl=document.getElementById('refreshLabel'); if(lbl) lbl.textContent='↻ Syncing…';
+  try{
+    state = await loadStateCloud();
+    if(state.clients.find(c=>c.id===keepClient)){
+      state.activeClient=keepClient;
+      if(C() && (C().phases||[]).find(p=>p.id===keepPhase)) state.activePhase=keepPhase;
+    }
+    activeWeek=keepWeek;
+    paintClient(); renderClientSwitcher(); renderPhaseSelect(); renderAll();
+    toast('Synced — showing the latest from the cloud');
+  }catch(e){ console.error('refresh',e); toast('Refresh failed — check your connection'); }
+  finally{ if(lbl) lbl.textContent='↻ Refresh'; }
+}
 function init(){
-  if(CLOUD){ const ap=document.getElementById('acctPill'); if(ap) ap.style.display=''; }
+  if(CLOUD){ const ap=document.getElementById('acctPill'); if(ap) ap.style.display=''; const rb=document.getElementById('refreshBtn'); if(rb) rb.style.display=''; }
   if(!C()){ // empty roster (shouldn't happen — cloud seeds — but stay safe)
     renderClientSwitcher();
     document.getElementById('clientHead').innerHTML='Coaching <em>Tracker</em>';
@@ -2450,3 +2501,5 @@ boot();
 </script>
 </body>
 </html>
+ 
+
