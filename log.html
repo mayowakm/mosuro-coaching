@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -17,33 +17,33 @@
   body{background:var(--paper);color:var(--ink);font-family:'DM Sans',system-ui,sans-serif;font-size:15px;line-height:1.55;padding-bottom:96px;}
   h1,h2,h3{font-family:'DM Serif Display',Georgia,serif;font-weight:400;}
   .wrap{max-width:640px;margin:0 auto;padding:0 16px;}
-
+ 
   .topbar{background:var(--ink);color:var(--white);padding:20px 0 18px;position:relative;}
   .topbar::after{content:'';position:absolute;left:0;right:0;bottom:0;height:4px;background:var(--accent);}
   .brand h1{font-size:25px;line-height:1.05;letter-spacing:-.3px;}
   .brand h1 em{color:#7fb0f5;font-style:italic;}
   .brand p{color:#b9b1a3;font-size:12.5px;margin-top:4px;}
-
+ 
   main{padding-top:22px;}
   .lead{font-size:14px;color:var(--muted);margin-bottom:18px;}
   .lead b{color:var(--ink);}
-
+ 
   .card{background:var(--card);border:1px solid var(--rule);border-radius:14px;box-shadow:var(--shadow);margin-bottom:16px;}
   .card-pad{padding:18px;}
   .eyebrow{font-size:10.5px;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;color:var(--accent);margin-bottom:8px;}
-
+ 
   .chips{display:flex;gap:8px;flex-wrap:wrap;}
   .chip{border:1.5px solid var(--rule);background:var(--white);border-radius:999px;padding:9px 16px;font-size:14px;font-weight:600;cursor:pointer;color:var(--muted);transition:.15s;}
   .chip:hover{border-color:var(--accent);}
   .chip.active{background:var(--accent);color:#fff;border-color:var(--accent);}
   .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
   .row .lbl{font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);min-width:44px;}
-
+ 
   label.fl{font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px;}
   input,textarea,select{font-family:'DM Sans',sans-serif;font-size:16px;color:var(--ink);border:1.5px solid var(--rule);border-radius:10px;background:var(--white);padding:11px 12px;width:100%;outline:none;transition:border-color .15s,box-shadow .15s;}
   input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);}
   textarea{resize:vertical;min-height:64px;line-height:1.5;}
-
+ 
   /* optional weight */
   .collapse-head{display:flex;justify-content:space-between;align-items:center;cursor:pointer;padding:14px 18px;}
   .collapse-head h3{font-size:15px;}
@@ -52,7 +52,7 @@
   .collapse.open .collapse-body{display:block;}
   .collapse.open .plus{transform:rotate(45deg);}
   .mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-
+ 
   /* session cards */
   .sess{margin-bottom:14px;overflow:hidden;}
   .sess-head{display:flex;align-items:center;gap:12px;padding:16px 18px;cursor:pointer;}
@@ -68,7 +68,7 @@
   .sess-body{display:none;padding:6px 18px 20px;border-top:1px solid var(--rule);}
   .sess.open .sess-body{display:block;}
   .sess-note{font-size:13px;color:var(--muted);margin:12px 0 16px;}
-
+ 
   .ex{border:1px solid var(--rule);border-radius:12px;padding:12px 13px;margin-bottom:11px;background:#fffdf9;}
   .ex.ex-done{background:#eef6ef;border-color:#bfe0c4;}
   .ex-head{display:flex;align-items:flex-start;gap:11px;margin-bottom:10px;}
@@ -82,18 +82,18 @@
   .ex-inputs.three{grid-template-columns:1fr 1fr 1fr;}
   .ex-inputs.two{grid-template-columns:1fr 1fr;}
   .ex-inputs .fl{margin-bottom:4px;}
-
+ 
   .meta3{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0;}
-
+ 
   .effort{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px;}
   .eff{width:38px;height:40px;border:1.5px solid var(--rule);background:var(--white);border-radius:9px;font-weight:700;font-size:15px;color:var(--muted);cursor:pointer;}
   .eff.active{background:var(--accent);color:#fff;border-color:var(--accent);}
-
+ 
   .btn{font-family:'DM Sans',sans-serif;font-weight:600;font-size:15px;cursor:pointer;border-radius:11px;padding:13px 20px;border:1.5px solid transparent;transition:.15s;width:100%;}
   .btn-primary{background:var(--accent);color:#fff;} .btn-primary:hover{background:var(--accent-deep);}
   .btn-ghost{background:transparent;color:var(--accent);border-color:var(--rule);} .btn-ghost:hover{border-color:var(--accent);background:var(--accent-soft);}
   .btn-done{background:var(--good);color:#fff;border-color:var(--good);}
-
+ 
   /* sticky share */
   .sharebar{position:fixed;left:0;right:0;bottom:0;background:rgba(245,240,232,.94);backdrop-filter:blur(8px);border-top:1px solid var(--rule);padding:12px 16px;z-index:60;}
   body.gated .topbar, body.gated main, body.gated .sharebar{ display:none !important; }
@@ -112,7 +112,7 @@
   .sharebar .wrap{padding:0 0;}
   .sharebar .btn{max-width:640px;margin:0 auto;display:block;}
   .sharebar .count{text-align:center;font-size:11.5px;color:var(--muted);margin-bottom:7px;font-weight:600;}
-
+ 
   /* modal */
   .overlay{position:fixed;inset:0;background:rgba(18,19,26,.5);display:none;align-items:flex-end;justify-content:center;z-index:100;}
   .overlay.show{display:flex;}
@@ -124,20 +124,20 @@
   .sheet .btn{margin-top:10px;}
   .close-x{float:right;background:none;border:none;font-size:22px;color:var(--muted);cursor:pointer;line-height:1;}
   .steps{background:var(--accent-soft);border:1px solid #cdddf5;border-radius:10px;padding:12px 14px;font-size:12.5px;color:var(--accent-deep);line-height:1.6;margin-bottom:14px;}
-
+ 
   .footer{text-align:center;margin-top:30px;padding-top:22px;border-top:2px solid var(--ink);}
   .footer .tag{font-family:'DM Serif Display',serif;font-style:italic;font-size:17px;color:var(--accent);}
   .footer .hash{margin-top:8px;font-size:11.5px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
   .footer .cred{margin-top:10px;font-size:11px;color:var(--muted);}
-
+ 
   .toast{position:fixed;bottom:96px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:11px 20px;border-radius:10px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:.25s;z-index:200;box-shadow:0 8px 30px rgba(0,0,0,.25);}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-
+ 
   @media(max-width:420px){ .ex-inputs.three{grid-template-columns:1fr 1fr;} }
 </style>
 </head>
 <body>
-
+ 
 <div id="authGate">
   <div class="auth-card">
     <div class="auth-brand">Your <em>Workouts</em></div>
@@ -151,17 +151,17 @@
     <p class="auth-fine">One-tap sign-in — no password. Use the same email your coach set you up with.</p>
   </div>
 </div>
-
+ 
 <div class="topbar">
   <div class="wrap brand">
     <h1>Hi <span id="helloName">there</span> <em>—</em> let’s log it</h1>
     <p id="coachLine">Your sessions with Coach Mayowa · #stayactive</p>
   </div>
 </div>
-
+ 
 <main class="wrap">
   <p class="lead">Tap today’s session, fill in what you did as you go. <span id="cloudNote" style="display:none;">Everything saves to your coach automatically.</span><span id="offlineNote">When you’re done, hit <b>Share with coach</b>. Everything saves on your phone automatically.</span></p>
-
+ 
   <!-- WHERE ARE YOU -->
   <div class="card card-pad">
     <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;">
@@ -180,7 +180,7 @@
       <button class="chip" style="padding:6px 12px;font-size:12px;" onclick="doLogout()">Sign out</button>
     </div>
   </div>
-
+ 
   <!-- OPTIONAL WEIGHT -->
   <div class="card collapse" id="weightCard">
     <div class="collapse-head" onclick="document.getElementById('weightCard').classList.toggle('open')">
@@ -197,24 +197,24 @@
       <div id="weightList" style="margin-top:12px;font-size:12.5px;color:var(--muted);"></div>
     </div>
   </div>
-
+ 
   <div class="eyebrow" style="margin:22px 0 10px;">Today’s session</div>
   <div id="sessions"></div>
-
+ 
   <div class="footer">
     <div class="tag">“Go far… Go fast… Go easy… Just go!”</div>
     <div class="hash">#activedad · #stayactive</div>
     <div class="cred" id="cred">Coaching by Mayowa Mosuro · Certified Personal Trainer</div>
   </div>
 </main>
-
+ 
 <div class="sharebar" id="shareBar">
   <div class="wrap">
     <div class="count" id="shareCount"></div>
     <button class="btn btn-primary" onclick="openShare()">📤 Share with coach</button>
   </div>
 </div>
-
+ 
 <div class="overlay" id="overlay">
   <div class="sheet">
     <button class="close-x" onclick="closeShare()">×</button>
@@ -226,7 +226,7 @@
     <button class="btn btn-ghost" onclick="downloadShare()">Download as file instead</button>
   </div>
 </div>
-
+ 
 <div class="overlay" id="setupOverlay">
   <div class="sheet">
     <button class="close-x" onclick="closeSetup()">×</button>
@@ -241,9 +241,9 @@
     <button class="btn btn-primary" onclick="applySetup()">Load my plan</button>
   </div>
 </div>
-
+ 
 <div class="toast" id="toast"></div>
-
+ 
 <script>
 /* ---------- default plan (used until the coach's setup code is loaded) ---------- */
 function nx(name,sets,reps){ return {name, sets:sets||'', reps:reps||''}; }
@@ -258,18 +258,18 @@ const DEFAULT_PLAN=[
    exercises:[nx('Brisk walk (incline) or Stairmaster — 60–75 min','','60–75 min')]}
 ];
 const STORE='isioma_client_v1';
-
+ 
 function uid(){ return (window.crypto&&crypto.randomUUID)? crypto.randomUUID() : 'id-'+Math.random().toString(36).slice(2,10); }
 function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
 function today(){return new Date().toISOString().slice(0,10);}
 function numOrNull(v){ return v==null||v===''? null : (typeof v==='number'? v : (isNaN(parseFloat(v))?null:parseFloat(v))); }
-
+ 
 /* ===== SUPABASE (cloud). Fill both in to go live; leave placeholders to run offline. ===== */
 const SUPABASE_URL = 'https://mmagrdnogqicaywkrhtw.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_qBipcgVdRFndEtE3SKtOCw_8DSer3xD';
 const CLOUD = !/PASTE_/.test(SUPABASE_URL) && !/PASTE_/.test(SUPABASE_KEY);
 let sb=null, USER=null;
-
+ 
 function fresh(){
   return { client:'Isioma Coker', email:'', coach:'Mayowa Mosuro', phaseName:'Phase 1', week:1, totalWeeks:4,
     plan: JSON.parse(JSON.stringify(DEFAULT_PLAN)), logs:{}, weights:[], _clientId:null, _phaseId:null };
@@ -277,7 +277,7 @@ function fresh(){
 let state=CLOUD?fresh():load();
 function load(){ try{const r=localStorage.getItem(STORE); if(r){const s=Object.assign(fresh(),JSON.parse(r)); if(!Array.isArray(s.plan)||!s.plan.length) s.plan=JSON.parse(JSON.stringify(DEFAULT_PLAN)); return s;}}catch(e){} return fresh(); }
 function save(){ if(CLOUD){ saveCloud(); return; } try{localStorage.setItem(STORE,JSON.stringify(state));}catch(e){} }
-
+ 
 /* ---------- cloud auth gate ---------- */
 function showLogin(msg){
   document.body.classList.add('gated');
@@ -317,7 +317,7 @@ async function afterLogin(session){
   }catch(e){ showLogin('Signed in, but loading failed: '+(e.message||e)); }
 }
 async function doLogout(){ try{ if(sb) await sb.auth.signOut(); }catch(e){} location.reload(); }
-
+ 
 async function loadCloud(){
   const cRes=await sb.from('clients').select('*').limit(1);
   const c=(cRes.data||[])[0]; if(!c) return false;
@@ -331,6 +331,7 @@ async function loadCloud(){
   state.client=c.name; state.email=c.email||''; state._clientId=c.id; state._phaseId=active.id;
   state.phaseName=active.name; state.totalWeeks=active.weeks||4; state.week=1;
   state.plan=workouts.map(w=>({ id:w.wkey, type:w.type, name:w.name, sched:w.sched, tracksWeight:!!w.tracks_weight, note:w.note||'',
+    weeks:(Array.isArray(w.weeks)&&w.weeks.length)?w.weeks.slice():null,
     exercises:(Array.isArray(w.exercises)?w.exercises:[]).map(e=>({name:e.name, sets:e.sets||'', reps:e.reps||''})) }));
   state._emptyPlan = state.plan.length===0; // coach hasn't built this phase yet — don't show fake defaults
   state.logs={};
@@ -360,7 +361,12 @@ async function runSaveCloud(){
   }catch(e){ console.error('client save',e); toast('Sync issue — will retry'); }
   _lb=false; if(_la){ _la=false; runSaveCloud(); }
 }
-
+ 
+/* Weekly overrides: a session can be scoped to specific weeks via its
+   optional `weeks` array (e.g. [2,4]), set by the coach. No `weeks` means
+   it applies every week — the default, so existing plans are unaffected. */
+function workoutAppliesToWeek(t,w){ return !t.weeks || !t.weeks.length || t.weeks.includes(w); }
+function planForWeek(w){ return state.plan.filter(t=>workoutAppliesToWeek(t,w)); }
 function key(w,wid){return w+'|'+wid;}
 function getLog(w,wid){
   const k=key(w,wid);
@@ -381,7 +387,7 @@ function getLog(w,wid){
 }
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2000);}
 let _s=null; function softSave(){clearTimeout(_s);_s=setTimeout(save,250);}
-
+ 
 /* ---------- setup code from coach ---------- */
 function openSetup(){
   document.getElementById('su_name').value=state.client||'';
@@ -408,6 +414,7 @@ function applySetup(){
     state.phaseName=payload.phaseName||state.phaseName;
     state.totalWeeks=payload.totalWeeks||state.totalWeeks;
     state.plan=(payload.workouts||[]).map(w=>({ id:w.id, type:w.type||'strength', name:w.name||'Session', sched:w.sched||'', tracksWeight:!!w.tracksWeight, note:w.note||'',
+      weeks:(Array.isArray(w.weeks)&&w.weeks.length)?w.weeks.slice():null,
       exercises:(w.exercises||[]).map(e=>({name:e.name, sets:e.sets||'', reps:e.reps||''})) }));
     if(!state.plan.length) state.plan=JSON.parse(JSON.stringify(DEFAULT_PLAN));
     // drop auto-created but untouched logs so their exercise rows reseed from the new plan
@@ -429,7 +436,7 @@ function renderIdentity(){
   document.getElementById('cred').textContent='Coaching by '+(state.coach||'Mayowa Mosuro')+' · Certified Personal Trainer';
   document.title=(state.client||'Client')+' — Log Your Workout';
 }
-
+ 
 /* ---------- render ---------- */
 function renderTop(){
   const sel=document.getElementById('phaseSel');
@@ -437,13 +444,14 @@ function renderTop(){
   const chips=document.getElementById('weekChips');
   let h='';
   for(let w=1;w<=state.totalWeeks;w++){
-    let done=0; state.plan.forEach(t=>{if(state.logs[key(w,t.id)]?.completed)done++;});
-    h+=`<button class="chip ${w===state.week?'active':''}" onclick="setWeek(${w})">Week ${w}${done?` · ${done}/${state.plan.length}`:''}</button>`;
+    const wk=planForWeek(w);
+    let done=0; wk.forEach(t=>{if(state.logs[key(w,t.id)]?.completed)done++;});
+    h+=`<button class="chip ${w===state.week?'active':''}" onclick="setWeek(${w})">Week ${w}${done?` · ${done}/${wk.length}`:''}</button>`;
   }
   chips.innerHTML=h;
 }
 function setWeek(w){state.week=w;save();renderTop();renderSessions();}
-
+ 
 function renderSessions(){
   const host=document.getElementById('sessions'); host.innerHTML='';
   if(!state.plan.length){
@@ -452,7 +460,7 @@ function renderSessions(){
       : 'No sessions loaded yet. Tap “Load plan from coach” above.';
     host.innerHTML='<p style="color:var(--muted);font-size:13px;">'+msg+'</p>'; updateShareCount(); return;
   }
-  state.plan.forEach(t=>{
+  planForWeek(state.week).forEach(t=>{
     const log=getLog(state.week,t.id);
     const card=document.createElement('div'); card.className='card sess'+(log._open?' open':'');
     const head=document.createElement('div'); head.className='sess-head';
@@ -468,7 +476,7 @@ function renderSessions(){
   });
   updateShareCount();
 }
-
+ 
 function allChecked(log){ return log.exercises.length>0 && log.exercises.every(e=>e.done); }
 function syncSessionDone(t,log,paintBtn){
   // auto-complete the session when every exercise is ticked
@@ -478,10 +486,10 @@ function syncSessionDone(t,log,paintBtn){
 function buildBody(t,log){
   const f=document.createDocumentFragment();
   const note=document.createElement('p'); note.className='sess-note'; note.textContent=t.note; f.appendChild(note);
-
+ 
   const prog=document.createElement('div'); prog.className='ex-progress'; f.appendChild(prog);
   const paintProg=()=>{ const done=log.exercises.filter(e=>e.done).length; prog.textContent=done+' of '+log.exercises.length+' exercises done'; prog.classList.toggle('all',done===log.exercises.length&&done>0); };
-
+ 
   const showW=t.tracksWeight;
   const targets={}; (t.exercises||[]).forEach(e=>{ targets[e.name]={sets:e.sets,reps:e.reps}; });
   let btnPaint=null;
@@ -513,24 +521,24 @@ function buildBody(t,log){
     box.appendChild(grid); f.appendChild(box);
   });
   paintProg();
-
+ 
   const meta=document.createElement('div'); meta.className='meta3';
   meta.appendChild(field('Date','date',log.date||today(),v=>{log.date=v;softSave();}));
   meta.appendChild(field('Total time','text',log.duration,v=>{log.duration=v;softSave();},'e.g. 45 min'));
   f.appendChild(meta);
-
+ 
   const el=document.createElement('div');
   el.innerHTML='<label class="fl" style="margin-bottom:8px;">How hard did it feel? (1 easy – 10 max)</label>';
   const eff=document.createElement('div'); eff.className='effort';
   for(let i=1;i<=10;i++){ const b=document.createElement('button'); b.className='eff'+(log.effort===i?' active':''); b.textContent=i;
     b.onclick=()=>{log.effort=i;softSave();eff.querySelectorAll('.eff').forEach((x,idx)=>x.classList.toggle('active',idx+1===i));}; eff.appendChild(b); }
   el.appendChild(eff); f.appendChild(el);
-
+ 
   const ol=document.createElement('div'); ol.style.marginTop='16px';
   ol.innerHTML='<label class="fl">Notes for coach</label>';
   const ta=document.createElement('textarea'); ta.placeholder='How did it go? Anything that felt off, or a win to share…';
   ta.value=log.observations||''; ta.addEventListener('input',()=>{log.observations=ta.value;softSave();}); ol.appendChild(ta); f.appendChild(ol);
-
+ 
   const btn=document.createElement('button');
   const paint=()=>{btn.className='btn '+(log.completed?'btn-ghost':'btn-done'); btn.textContent=log.completed?'✓ Marked done — tap to undo':'Mark this session done';};
   btnPaint=paint; paint(); btn.style.marginTop='16px';
@@ -555,7 +563,7 @@ function field(label,type,val,onCh,ph){
   const i=document.createElement('input'); i.type=type; i.value=val||''; if(ph)i.placeholder=ph;
   i.addEventListener('input',()=>onCh(i.value)); w.appendChild(i); return w;
 }
-
+ 
 /* ---------- weight ---------- */
 function saveWeight(){
   const w=document.getElementById('q_weight').value, d=document.getElementById('q_date').value||today(), n=document.getElementById('q_note').value.trim();
@@ -569,7 +577,7 @@ function renderWeights(){
   if(!state.weights.length){el.innerHTML='';return;}
   el.innerHTML='Saved: '+state.weights.slice().reverse().map(w=>`${w.date} · ${w.weight} lbs`).join(' &nbsp;|&nbsp; ');
 }
-
+ 
 /* ---------- share ---------- */
 function loggedSessions(){
   const out=[];
@@ -625,7 +633,7 @@ function downloadShare(){
   a.download=(state.client||'Client').replace(/\s+/g,'_')+'_workout_'+today()+'.txt'; a.click(); URL.revokeObjectURL(a.href); toast('Downloaded — send the file to Coach');
 }
 document.getElementById('overlay').addEventListener('click',e=>{if(e.target.id==='overlay')closeShare();});
-
+ 
 /* ---------- init ---------- */
 function bootUI(){
   document.getElementById('q_date').value=today();
@@ -643,3 +651,5 @@ if(CLOUD){ cloudBoot(); } else { bootUI(); }
 </script>
 </body>
 </html>
+ 
+
